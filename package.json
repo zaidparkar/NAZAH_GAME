@@ -1,0 +1,36 @@
+{
+  "name": "nazah_game",
+  "version": "1.0.0",
+  "description": "Game for Web Programming Course Work",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashab272000/NAZAH_GAME.git"
+  },
+  "author": "Nija, Aditya, Zaid, Ashab, Harshal",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "html-webpack-plugin": "^3.0.7",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "fractional": "^1.0.0",
+    "uniqid": "^4.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/ashab272000/NAZAH_GAME/issues"
+  },
+  "homepage": "https://github.com/ashab272000/NAZAH_GAME#readme"
+}
