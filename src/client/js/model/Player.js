@@ -1,6 +1,4 @@
 
-
-
 export class Player {
     //player consturtor needs an Id
     //player needs health 
@@ -13,12 +11,17 @@ export class Player {
         this.y =y;
         this.speed = 10;
         this.angle = 0;
+
+        //Add the player to the player list automatically
+        //Player.list is initialized down below
         Player.list[this.id] = this;
     }
 
     //updates the movement
+    // it recieves the controls key and angle from the mouse movement as the parameters
     update(movement, angle){
 
+        //updates the position if any key is pressed
         if(movement.pressingRight){
             this.x += this.speed;
         } else if (movement.pressingUp){
@@ -29,25 +32,10 @@ export class Player {
             this.y -= this.speed;
         }
 
+        //assigns the angle of mouse movement to the angle of the player
         this.angle = angle;
 
     }
-
-    /*
-    drawSelf(ctx = elements.ctx, angle = 0)
-    {
-        ctx.save();
-        ctx.height = 75;
-        ctx.width = 75;
-        if(angle == 0)
-            angle = this.getAngle(this.x, this.y, mouseX, mouseY);
-
-        console.log(angle);    
-        ctx.translate(this.x, this.y);
-        ctx.rotate(angle - deg_to_rad(90));
-        ctx.drawImage(this.img,-this.img.width/2,-this.img.height/2, this.img.width, this.img.height);
-        ctx.restore();
-    } */ 
 }
 
 
@@ -57,16 +45,3 @@ export class Player {
 //So basically all the players in the server
 //This wil only be useful when there is server side implementation
 Player.list={};
-
-
-// Controller code
-
-
-
-
-//handler for the update loop every frames
-
-
-
-
-

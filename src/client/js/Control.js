@@ -2,7 +2,7 @@ import * as base from './views/base'
 
 
 
-export const controlKeys = {
+const controlKeys = {
     pressingRight:false,
     pressingUp:false,
     pressingLeft:false,
@@ -45,6 +45,8 @@ const deg_to_rad = (degrees) =>{
 
 
 
+//event handler for the keyup
+//all the values for pressing keys are set to false
 window.addEventListener('keyup', (e) =>
 {
 
@@ -69,7 +71,8 @@ window.addEventListener('keyup', (e) =>
 
 
 
-
+//event handler for the keydown
+//all the values for pressing keys are set to true
 window.addEventListener('keydown', (e)=>{
 
     if(e.keyCode === 68)//Pressing d
@@ -91,15 +94,20 @@ window.addEventListener('keydown', (e)=>{
 });
 
 
+
+//Gets the boundaries of the canvas
 const rect = base.elements.canvasMain.getBoundingClientRect();
 
 
+//event handler for mouse movement
+//stores the position of the mouse relative to the canvas
 base.elements.canvasMain.addEventListener('mousemove', (e) => {
     controlKeys.mouseX = e.clientX - rect.left;
     controlKeys.mouseY = e.clientY - rect.top;
 });
 
-
+//This function returns the angle of the player in terms of mouse position
+//It also returns the keypress.
 export const getControl = (player) =>{
 
     const mouseX = controlKeys.mouseX;
