@@ -8,8 +8,20 @@
 </head>
 <body>
 
-    <canvas id='ctx' width="500px" height="500px" style='border: 1px solid #000; position: absolute;'></canvas>
 
+    <canvas id='ctx' width="500px" height="500px" style='border: 1px solid #000; position: absolute;'></canvas>
     <script src="./js/index.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //lets the client connect with a server
+        var socket = io.connect('http://localhost');
+
+        //testing
+        socket.on('news', function (data) {
+          console.log(data);
+          socket.emit('my other event', { my: 'data' });
+        });
+
+      </script>
 <script type="text/javascript" src="js/bundle.js"></script></body>
 </html>
