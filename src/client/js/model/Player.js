@@ -9,7 +9,12 @@ export class Player extends Entity {
     constructor(id, x = 250, y =250){
         super(id, x, y);
         this.health = 100;
-
+        this.preMovement = {
+            x : this.x,
+            y : this.y,
+            angle : this.angle
+        }
+      
         //Add the player to the player list automatically
         //Player.list is initialized down below
         Player.list[this.id] = this;
@@ -48,6 +53,30 @@ export class Player extends Entity {
             console.log("Im shooting");
 
        
+    }
+
+    //returns true if the player moved or looked
+    isChanged()
+    {
+        let changed = false;
+
+        if(this.preMovement.x = this.x)
+        {
+            changed = true;
+        }else if (this.preMovement.y = this.y)
+        {
+            changed = true;
+        }else if (this.preMovement.angle = this.angle){
+            changed = true;
+        }
+        if(changed)
+        {
+            this.preMovement.x = this.x;
+            this.preMovement.y = this.y;
+            this.preMovement.angle = this.angle
+        }
+        return changed;
+
     }
 }
 

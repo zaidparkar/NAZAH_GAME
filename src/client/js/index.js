@@ -18,6 +18,7 @@ const player = new Player(1223);
 const Update = () =>{
 
     //gets the context of the canvas
+    //clears it
     base.elements.ctxMain.clearRect(0,0,500,500);
 
     //get the input controls
@@ -31,12 +32,14 @@ const Update = () =>{
         bullet.update();
     }
 
+    
+
     //draws the player in the canvas
     playerView.drawPlayer(player, base.elements.ctxMain);
 
 }
 
-
+//runs the interval in 25 fps
 setInterval(Update , 1000/25);
 
 
