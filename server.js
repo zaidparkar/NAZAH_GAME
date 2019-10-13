@@ -1,15 +1,18 @@
-
 //The required module for the connection attempts
-const app = require('express')();
+const express = require('express');
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 server.listen(80);
 // WARNING: app.listen(80) will NOT work here!
 
+//Sends the 'dist' folder to server
+app.use('/', express.static(__dirname + '/dist'));
+
+//sends the index.html file in the dist folder
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
-  res.sendFile(__dirname + '/js/bundle.js');
+  res.sendFile(__dirname + '/dist/index.html');
 });
 
 
