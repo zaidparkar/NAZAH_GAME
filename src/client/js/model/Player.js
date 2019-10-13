@@ -1,5 +1,5 @@
 
-export class Player {
+export class Player{
     //player consturtor needs an Id
     //player needs health 
     //player needs spawn position x and y
@@ -11,6 +11,11 @@ export class Player {
         this.y =y;
         this.speed = 10;
         this.angle = 0;
+        this.preMovement = {
+            x : this.x,
+            y : this.y,
+            angle : this.angle
+        }
 
         //Add the player to the player list automatically
         //Player.list is initialized down below
@@ -34,6 +39,30 @@ export class Player {
 
         //assigns the angle of mouse movement to the angle of the player
         this.angle = angle;
+
+    }
+
+    //returns true if the player moved or looked
+    isChanged()
+    {
+        let changed = false;
+
+        if(this.preMovement.x = this.x)
+        {
+            changed = true;
+        }else if (this.preMovement.y = this.y)
+        {
+            changed = true;
+        }else if (this.preMovement.angle = this.angle){
+            changed = true;
+        }
+        if(changed)
+        {
+            this.preMovement.x = this.x;
+            this.preMovement.y = this.y;
+            this.preMovement.angle = this.angle
+        }
+        return changed;
 
     }
 }

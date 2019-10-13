@@ -8,7 +8,7 @@ import * as base from './base';
 export const drawPlayer = (player,ctx) =>
 {
     //Gets the image of the player
-    const img = base.getImage(base.pathStrings.trial,75,50);
+    const img = base.getImage(base.pathStrings.buildTrial,75,50);
 
     //saves the context transform
     ctx.save();
