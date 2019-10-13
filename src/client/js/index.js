@@ -2,6 +2,8 @@ import {Player} from './model/Player';
 import * as playerView from './views/playerView';
 import * as base from './views/base';
 import {getControl} from './Control';
+import {Bullet} from './model/Bullet';
+
 
 
 
@@ -23,7 +25,12 @@ const Update = () =>{
     const controls = getControl(player);
 
     // updates movement and the angle
-    player.update(controls.movement, controls.angle);
+    player.update(controls.movement, controls.angle, controls.click);
+    
+    for(const i in Bullet.list){
+        const bullet = Bullet.list[i];
+        bullet.update();
+    }
 
     
 

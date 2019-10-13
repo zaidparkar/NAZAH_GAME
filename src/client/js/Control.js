@@ -8,7 +8,8 @@ const controlKeys = {
     pressingLeft:false,
     pressingDown:false,
     mouseX: 0,
-    mouseY: 0
+    mouseY: 0,
+    click:false
 } 
 
 
@@ -68,6 +69,15 @@ window.addEventListener('keyup', (e) =>
 
     
 });
+window.addEventListener('mousedown',(e)=>{
+    controlKeys.click=true;
+    
+});
+
+window.addEventListener('mouseup',(e)=>{
+    controlKeys.click=false;
+    
+});
 
 
 
@@ -123,7 +133,8 @@ export const getControl = (player) =>{
             pressingDown: controlKeys.pressingDown
 
         },
-        angle : angle
+        angle : angle,
+        click : controlKeys.click
     }
 }
 
