@@ -22,15 +22,19 @@ class Player{
     constructor(id)
     {
         this.id = id;
+        this.isUpdated = false;
         Player.list[id] = this;
     }
 
-    update(movement, angle)
+    update(data)
     {
-        this.x = movement.x;
-        this.y = movement.y;
-        this.angle = movement.angle;
+        this.x = data.x;
+        this.y = data.y;
+        this.angle = data.angle;
+        this.isUpdated = true;
     }
+
+
 }
 Player.list ={};
 
@@ -41,6 +45,8 @@ io.on('connection', (socket) => {
 
     //generates a socket id 
     socket.id = Math.random();
+    console.log(socket.id);
+    socket.emit('init', socket.id);
     //add socket in the list
     socketList[socket.id] = socket;
 
@@ -57,10 +63,37 @@ io.on('connection', (socket) => {
 
     //checks for the player data coming from 
     socket.on('playerData', (data)=> {
-        console.log(data);
+        player.update(data);
     })
 
 });
+
+//every 40ms the server updates the client of all the players
+setInterval(()=> {
+        let pack=[];
+        for(let id in Player.list){
+            player = Player.list[id];
+
+            if(player.isUpdated)
+            {
+                pack.push({
+                    id: player.id,
+                    x: player.x,
+                    y: player.y,
+                    angle: player.angle
+                });
+                player.isUpdated = false;
+            }
+            
+        }
+
+
+        for(let id in socketList){
+            socket = socketList[id];
+            socket.emit("update", pack);
+        }
+    }, 1000/25
+);
 
 
 

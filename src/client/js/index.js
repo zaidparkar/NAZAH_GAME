@@ -1,4 +1,4 @@
-import { player } from './connection/Connect';
+import { selfPlayer} from './connection/Connect';
 import {Player} from './model/Player';
 import * as playerView from './views/playerView';
 import * as base from './views/base';
@@ -9,19 +9,20 @@ import {Bullet} from './model/Bullet';
 
 
 
+
 const Update = () =>{
     
-    if(player)
+    if(selfPlayer)
     {
         //gets the context of the canvas
         //clears it
         base.elements.ctxMain.clearRect(0,0,500,500);
 
         //get the input controls
-        const controls = getControl(player);
+        const controls = getControl(selfPlayer);
 
         // updates movement and the angle
-        player.update(controls.movement, controls.angle, controls.click);
+        selfPlayer.update(controls.movement, controls.angle, controls.click);
         
         for(const i in Bullet.list){
             const bullet = Bullet.list[i];
@@ -31,7 +32,12 @@ const Update = () =>{
         
 
         //draws the player in the canvas
-        playerView.drawPlayer(player, base.elements.ctxMain);
+        for(let id in Player.list)
+        {
+            const player = Player.list[id];
+            playerView.drawPlayer(player, base.elements.ctxMain);
+        }
+        
     }
 
 }
