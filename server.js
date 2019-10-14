@@ -16,12 +16,13 @@ app.get('/', function (req, res) {
 });
 
 
-//testing
+//Player class to store movement and angle
 class Player{
 
     constructor(id)
     {
         this.id = id;
+        Player.list[id] = this;
     }
 
     update(movement, angle)
@@ -31,11 +32,37 @@ class Player{
         this.angle = movement.angle;
     }
 }
+Player.list ={};
 
-// testing 
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+// This is list all the sockets connected to the server
+const socketList = {};
+
+io.on('connection', (socket) => {
+
+    //generates a socket id 
+    socket.id = Math.random();
+    //add socket in the list
+    socketList[socket.id] = socket;
+
+    let player = new Player(socket.id);
+
+    socket.on('disconnect', () =>
+    {
+        delete socketList[socket.id];
+        delete Player.list[socket.id];
+    });
+
+    //Sends a meesage to everyone stating a new player has joined
+    io.emit("pl", "a new player has connected");
+
+    //checks for the player data coming from 
+    socket.on('playerData', (data)=> {
+        console.log(data);
+    })
+
 });
+
+
+
+
+
