@@ -15,7 +15,6 @@ export class Bullet extends Entity{
       if(this.timer++ > 100){
         this.toRemove=true;
       }
-      console.log("" + this.x + " " + this.y + " " +  this.toRemove );
     }
     
 

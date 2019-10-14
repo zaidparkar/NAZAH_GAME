@@ -6,13 +6,10 @@ export const elements = {
 
 
 
-export const devPathStrings = {
-    trial:'../../img/spt/sp.png'
-}
 
 
-export const buildPathStrings = {
-    trial: '../../dist/img/spt/sp.png'
+export const pathStrings = {
+    trial: './img/spt/sp.png'
 }
 
 
