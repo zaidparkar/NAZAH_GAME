@@ -6,9 +6,11 @@ const io = require('socket.io-client');
 const socket = io.connect('http://localhost');
 
 
-//Calls an anonymouse function when connected with the server
+//self id for the player
 export let selfId;
+//the player of the user
 export let selfPlayer;
+//variable to sync in with the server
 export let sync = false;
 const syncTime = 4;
 let syncTimer = 0;
@@ -42,7 +44,10 @@ socket.on('update', (pack) =>
     for(const i in pack){
         //get data on one user
         let data = pack[i];
+
         let player;
+
+        //check if the player is new or not
         if(Player.list[data.id] != null)
         {
             console.log("Boring, its the same old player");
@@ -64,6 +69,15 @@ socket.on('update', (pack) =>
 });
 
 
+//If a player disconnects
+//the id of the player is recieved
+//we delete the player
+socket.on('playerDisconnected', (socketId) =>
+{
+    delete Player.list[socketId];
+});
+
+
 
 
 
@@ -82,6 +96,7 @@ setInterval(()=>{
         });
     }
 
+    //checks if the game is in sync with the server
     if(sync)
     {
         syncTimer++;

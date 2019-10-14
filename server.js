@@ -54,6 +54,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () =>
     {
+        io.emit('playerDisconnected', socket.id);
         delete socketList[socket.id];
         delete Player.list[socket.id];
     });
