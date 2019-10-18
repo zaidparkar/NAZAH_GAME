@@ -110,6 +110,10 @@ setInterval(()=>{
 }, 1000/25
 );
 
+//only use when testing
+
+selfPlayer = new Player(12223);
+
 
 
 
