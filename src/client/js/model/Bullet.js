@@ -15,6 +15,7 @@ export class Bullet extends Entity{
       if(this.timer++ > 100){
         this.toRemove=true;
       }
+      //super.update();
     }
     
 

@@ -9,16 +9,21 @@ export class Entity{
 
     }
     //gets distance between the two objects 
-    getDistance(obj1,obj2)  {
-        var distX = obj2.x - obj1.x;
-        var distY = obj2.y - obj1.y;
+    getDistance(obj)  {
+        var distX = this.x - obj.x;
+        var distY = this.y - obj.y;
         return Math.sqrt(Math.pow(distX,2)+Math.pow(distY,2));
     }
 
     //Alerts the console that the objects have collided
-    checkCollision(obj1,obj2)  {
-        if(getDistance(obj1,obj2) < 10);
+    checkCollision(obj1)  {
+        if(getDistance(obj1) < 5)
             console.log("Collision Alert");
     }
+
+    /*update()  {
+        this.checkCollision(Player);
+    this.x < obj1.x + obj1.w && this.x + this.w > obj1.x && this.y < obj1.y + obj1.h && this.y + this.h > obj1.y
+    }*/
   
 }
