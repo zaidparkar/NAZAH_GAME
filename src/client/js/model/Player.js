@@ -27,6 +27,8 @@ export class Player extends Entity {
 
         //fire rate of the gun
         this.fireRate = 250;
+
+        this.isShot = false;
         
 
         //variable used in ischanged function to know if the player moved
@@ -58,7 +60,9 @@ export class Player extends Entity {
             this.y -= this.speed;
         } 
         
-        if(click){
+
+        //checks if there is a click and also within the fireRate
+        if(click && !this.isShot){
             this.shoot();
         }
 
@@ -89,26 +93,36 @@ export class Player extends Entity {
 
             this.reloading = false;
 
-        }, this.reloadTime)
+        }, this.reloadTime);
         
     }
 
     shoot(){
 
-        //shoots if there is ammo in the magazine
-        if(this.ammoInMag > 0)
-        {
-            const bullet = new Bullet(Math.random(),this.x,this.y);
-            bullet.angle=this.angle;
+        this.isShot = true;
+        
+        setTimeout(() => {
 
-            //Reduce the ammo in mag 
-            this.ammoInMag -= 1;
-        } else {
-            //if not then reloads
-            if(!this.reloading){
-                this.reload();
+            //shoots if there is ammo in the magazine
+            if(this.ammoInMag > 0)
+            {
+                const bullet = new Bullet(Math.random(),this.x,this.y);
+                bullet.angle=this.angle;
+    
+                //Reduce the ammo in mag 
+                this.ammoInMag -= 1;
+            } else {
+                //if not then reloads
+                if(!this.reloading){
+                    this.reload();
+                }
             }
-        }
+
+            this.isShot = false;
+
+        }, (60/this.fireRate) * 1000 );
+
+        
 
 
 
