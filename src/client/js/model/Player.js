@@ -9,6 +9,12 @@ export class Player extends Entity {
     constructor(id, x = 250, y =250){
         super(id, x, y);
         this.health = 100;
+
+        //bullet count
+        this.magSize = 30;
+        this.ammoInMag = 30
+        this.ammo = 180;
+        
         this.preMovement = {
             x : this.x,
             y : this.y,
@@ -18,6 +24,8 @@ export class Player extends Entity {
         //Add the player to the player list automatically
         //Player.list is initialized down below
         Player.list[this.id] = this;
+        console.log(Object.keys(Player.list).length);
+        
     }
 
     //updates the movement
@@ -48,11 +56,36 @@ export class Player extends Entity {
 
     shoot(){
 
-            const bullet = new Bullet(Math.random,this.x,this.y);
+        //shoots if there is ammo in the magazine
+        if(this.ammoInMag > 0)
+        {
+            const bullet = new Bullet(Math.random(),this.x,this.y);
             bullet.angle=this.angle;
-            console.log("Im shooting");
 
-       
+            //Reduce the ammo in mag 
+            this.ammoInMag -= 1;
+        } else {
+            //if not then reloads
+            this.reload();
+        }
+
+
+
+    }
+
+    //reloading function
+    reload(){
+
+
+        if(this.ammo >= (this.magSize - this.ammoInMag))
+        {
+            this.ammo = this.magSize - this.ammoInMag;
+            this.ammoInMag = this.magSize;
+        } else {
+            this.ammoInMag += this.ammo;
+            this.ammo = 0;
+        }
+        
     }
 
     //returns true if the player moved or looked
@@ -78,6 +111,10 @@ export class Player extends Entity {
         return changed;
 
     }
+
+    //write the function
+    //iterate through all the players
+    //
 }
 
 
