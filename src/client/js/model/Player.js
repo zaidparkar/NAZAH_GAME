@@ -10,11 +10,26 @@ export class Player extends Entity {
         super(id, x, y);
         this.health = 100;
 
-        //bullet count
-        this.magSize = 30;
-        this.ammoInMag = 30
+        //Gun variables 
+
+
+        //The ammount of ammo a mag can hold
+        this.magSize = 3;
+        //The ammount of ammo person currently has in their magazine
+        this.ammoInMag = 1;
+        //total ammo the person has
         this.ammo = 180;
+
+        //reloading variables
+        this.reloadTime = 1000;
+        this.reloading = false
+
+
+        //fire rate of the gun
+        this.fireRate = 250;
         
+
+        //variable used in ischanged function to know if the player moved
         this.preMovement = {
             x : this.x,
             y : this.y,
@@ -32,7 +47,6 @@ export class Player extends Entity {
     // it recieves the controls key and angle from the mouse movement as the parameters
     update(movement, angle, click){
 
-        console.log("click"+click);
         //updates the position if any key is pressed
         if(movement.pressingRight){
             this.x += this.speed;
@@ -42,7 +56,9 @@ export class Player extends Entity {
             this.x -= this.speed;
         } else if (movement.pressingDown){
             this.y -= this.speed;
-        } else if(click){
+        } 
+        
+        if(click){
             this.shoot();
         }
 
@@ -52,6 +68,29 @@ export class Player extends Entity {
 
         //this.shoot(click);
 
+    }
+
+
+    
+    //reloading function
+    reload(){
+
+        this.reloading = true;
+        setTimeout( () => {
+
+            if(this.ammo >= (this.magSize - this.ammoInMag))
+            {
+                this.ammo -= this.magSize - this.ammoInMag;
+                this.ammoInMag = this.magSize;
+            } else {
+                this.ammoInMag += this.ammo;
+                this.ammo = 0;
+            }
+
+            this.reloading = false;
+
+        }, this.reloadTime)
+        
     }
 
     shoot(){
@@ -66,26 +105,13 @@ export class Player extends Entity {
             this.ammoInMag -= 1;
         } else {
             //if not then reloads
-            this.reload();
+            if(!this.reloading){
+                this.reload();
+            }
         }
 
 
 
-    }
-
-    //reloading function
-    reload(){
-
-
-        if(this.ammo >= (this.magSize - this.ammoInMag))
-        {
-            this.ammo = this.magSize - this.ammoInMag;
-            this.ammoInMag = this.magSize;
-        } else {
-            this.ammoInMag += this.ammo;
-            this.ammo = 0;
-        }
-        
     }
 
     //returns true if the player moved or looked
