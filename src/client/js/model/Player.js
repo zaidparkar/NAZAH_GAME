@@ -48,9 +48,10 @@ export class Player extends Entity {
 
     shoot(){
 
-            const bullet = new Bullet(Math.random,this.x,this.y);
+            const bullet = new Bullet(Math.random(),this.x,this.y);
             bullet.angle=this.angle;
-            console.log("Im shooting");
+            
+            console.log(Bullet.list);
 
        
     }
