@@ -1,10 +1,12 @@
 import { selfPlayer} from './connection/Connect';
 import {Player} from './model/Player';
 import * as playerView from './views/playerView';
+import * as bulletView from './views/bulletView';
 import * as base from './views/base';
 import {getControl} from './Control';
 import {Bullet} from './model/Bullet';
 import {cells} from './CollisionSystem';
+
 
 
 
@@ -28,6 +30,8 @@ const Update = () =>{
         for(const i in Bullet.list){
             const bullet = Bullet.list[i];
             bullet.update();
+            bulletView.drawBullet(bullet, base.elements.ctxMain);
+            
         }
 
         

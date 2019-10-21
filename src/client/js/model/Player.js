@@ -170,10 +170,6 @@ export class Player extends Entity {
 
         }, (60/this.fireRate) * 1000 );
 
-        
-
-
-
     }
 
     //returns true if the player moved or looked
