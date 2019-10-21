@@ -8,15 +8,15 @@ import * as base from './base';
 export const drawPlayer = (player,ctx) =>
 {
     //Gets the image of the player
-    const img = base.getImage(base.pathStrings.trial,75,50);
+    const img = base.getImage(base.pathStrings.trial,150,100);
 
     //saves the context transform
     ctx.save();
 
     //alternates the context transform to draw the player
     // some of the values are hardcoded and waiting for replacement
-    ctx.height = 75;
-    ctx.width = 50;
+    ctx.height = 300;
+    ctx.width = 200;
     ctx.translate(player.x, player.y);
     ctx.rotate(player.angle);
     ctx.drawImage(img, -img.width/2, -img.height/2, img.width, img.height);

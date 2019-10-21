@@ -4,6 +4,7 @@ import * as playerView from './views/playerView';
 import * as base from './views/base';
 import {getControl} from './Control';
 import {Bullet} from './model/Bullet';
+import {cells} from './CollisionSystem';
 
 
 
@@ -22,7 +23,7 @@ const Update = () =>{
         const controls = getControl(selfPlayer);
 
         // updates movement and the angle
-        selfPlayer.update(controls.movement, controls.angle, controls.click);
+        selfPlayer.update(controls.movement, controls.angle, controls.click, cells);
         
         for(const i in Bullet.list){
             const bullet = Bullet.list[i];
@@ -39,6 +40,8 @@ const Update = () =>{
         }
         
     }
+
+
 
 }
 
