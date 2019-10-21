@@ -13,7 +13,7 @@ export class Bullet extends Entity{
       this.timer=0;
       this.toRemove=false;
       if(this.timer++ > 100){
-        this.toRemove=true;
+        this.toRemove=true;s
       }
 
     }
