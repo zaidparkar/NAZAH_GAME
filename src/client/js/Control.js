@@ -54,16 +54,17 @@ window.addEventListener('keyup', (e) =>
     if(e.keyCode === 68)// d
     {
         controlKeys.pressingRight = false
-    }else if(e.keyCode ===83)// w
+    }else if(e.keyCode ===83)// s
     {
-        controlKeys.pressingUp = false;
+        controlKeys.pressingDown = false;
 
     }else if(e.keyCode ===65)// a
     {
         controlKeys.pressingLeft = false;
-    }else if(e.keyCode === 87)// s
+
+    }else if(e.keyCode === 87)// w
     {
-        controlKeys.pressingDown = false;
+        controlKeys.pressingUp = false;
 
     }
 
@@ -88,16 +89,16 @@ window.addEventListener('keydown', (e)=>{
     if(e.keyCode === 68)//Pressing d
     {
         controlKeys.pressingRight = true;
-    }else if(e.keyCode ===83)//Pressing w
+    }else if(e.keyCode ===83)//Pressing s
     {
-        controlKeys.pressingUp = true;
+        controlKeys.pressingDown = true;
 
     }else if(e.keyCode ===65)//Pressing a
     {
         controlKeys.pressingLeft = true;
-    }else if(e.keyCode === 87)//Pressing s
+    }else if(e.keyCode === 87)//Pressing w
     {
-        controlKeys.pressingDown = true;
+        controlKeys.pressingUp = true;
 
     }
 
