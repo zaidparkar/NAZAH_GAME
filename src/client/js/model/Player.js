@@ -1,5 +1,6 @@
 import {Entity} from './Entity';
 import { Bullet } from './Bullet';
+import {cells} from '../CollisionSystem';
 
 export class Player extends Entity {
     //player consturtor needs an Id
@@ -53,7 +54,7 @@ export class Player extends Entity {
         const restrict = this.restriction(cells);
 
         //console.log(restrict.up);
-        console.log(restrict.right);
+        //console.log(restrict.right);
         //console.log(restrict.down);        
         //console.log(restrict.left);
 

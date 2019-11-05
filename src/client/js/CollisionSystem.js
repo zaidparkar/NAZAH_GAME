@@ -45,10 +45,11 @@ const mapTheGrid = (img,ctx) =>{
 
     for(let i = 0; i < columns; i++)
     {
-        y += cellSize;
+        x += cellSize;
+        y = -cellSize/2;
         for(let j = 0; j < rows; i++)
         {
-            x+= cellSize;
+            y += cellSize;
             const pixel = ctx.getImageData(x, y, 1, 1);
             let occupied = false;
             if(pixel.data[0] == wallColor.r && pixel.data[1] == wallColor.g && pixel.data[2] == wallColor.b){
@@ -60,6 +61,22 @@ const mapTheGrid = (img,ctx) =>{
     }
 
 };
+
+const checkOccupied = (cells) => {
+    
+    for(let i = 0; i < cells.length; i++) {
+        const cell = cells[i];
+
+        if(Player.x == cell[i].x || Player.y == cell[i].y)  {
+            cell[i].occupied = true;
+            cell[i+1].occupied = true;
+        }
+        else  {
+            cell[i].occupied = false;
+            cell[i+1].occupied = false; 
+        }
+    }
+}
 
 //for testing purposes
 //send the surounding cells to the player
