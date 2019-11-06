@@ -6,10 +6,24 @@ import * as base from './views/base';
 import {getControl} from './Control';
 import {Bullet} from './model/Bullet';
 import {cells} from './CollisionSystem';
+import * as mapView from './views/mapView';
+import * as CollisionSystem from './CollisionSystem';
 
 
 
 
+const init = () =>
+{
+    //base.elements.ctxMain.clearRect(0,0,500,500);
+    //draw the map
+    mapView.drawMap(base.elements.ctxMain);
+
+    CollisionSystem.mapTheGrid(base.elements.ctxMain);
+
+    //runs the interval in 25 fps
+    setInterval(Update , 1000/25);
+
+}
 
 
 
@@ -20,6 +34,8 @@ const Update = () =>{
         //gets the context of the canvas
         //clears it
         base.elements.ctxMain.clearRect(0,0,500,500);
+
+        mapView.drawMap(base.elements.ctxMain);
 
         //get the input controls
         const controls = getControl(selfPlayer);
@@ -49,8 +65,10 @@ const Update = () =>{
 
 }
 
-//runs the interval in 25 fps
-setInterval(Update , 1000/25);
+setTimeout(init, 100);
+
+
+
 
 
 

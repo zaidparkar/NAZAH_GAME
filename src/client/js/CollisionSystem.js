@@ -1,6 +1,6 @@
 
 
-const grid = [];
+export const grid = [];
 
 
 const mapSize = {
@@ -14,9 +14,9 @@ const cellSize = {
 }
 
 const wallColor = {
-    r:255,
-    g:255,
-    b:255
+    r:149,
+    g:134,
+    b:129   
 }
 
 
@@ -35,25 +35,31 @@ const img = new Image();
 
 
 //this maps the grid
-const mapTheGrid = (img,ctx) =>{
+export const mapTheGrid = (ctx) =>{
 
     const columns = (mapSize.x/cellSize.x);
     const rows = (mapSize.y/cellSize.y);
 
-    let x = -cellSize/2;
-    let y = -cellSize/2;
+    let y = parseInt(-cellSize.y/2);
+
+
 
     for(let i = 0; i < columns; i++)
     {
-        y += cellSize;
-        for(let j = 0; j < rows; i++)
+        
+        y += cellSize.y;
+        let x = parseInt(-cellSize.x/2);
+
+        for(let j = 0; j < rows; j++)
         {
-            x+= cellSize;
+
+            x+= cellSize.x;
             const pixel = ctx.getImageData(x, y, 1, 1);
             let occupied = false;
             if(pixel.data[0] == wallColor.r && pixel.data[1] == wallColor.g && pixel.data[2] == wallColor.b){
                 occupied = true;
             }
+            ctx.putImageData(pixel, x, y);
 
             grid.push(new Cell(occupied));
         }

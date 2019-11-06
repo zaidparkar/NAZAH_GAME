@@ -9,7 +9,8 @@ export const elements = {
 
 
 export const pathStrings = {
-    trial: './img/spt/sp.png'
+    trial: './img/spt/sp.png',
+    map: './img/spt/map.jpg'
 }
 
 

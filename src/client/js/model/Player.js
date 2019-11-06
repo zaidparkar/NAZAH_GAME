@@ -53,7 +53,7 @@ export class Player extends Entity {
         const restrict = this.restriction(cells);
 
         //console.log(restrict.up);
-        console.log(restrict.right);
+        //console.log(restrict.right);
         //console.log(restrict.down);        
         //console.log(restrict.left);
 
