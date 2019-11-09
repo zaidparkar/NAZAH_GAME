@@ -13,21 +13,25 @@ export class Bullet extends Entity{
     }
 
     update(cell){
-      this.timer ++;  
-      this.x += Math.cos(this.angle) * this.speed;
-      this.y += Math.sin(this.angle) * this.speed ;
-      //console.log(this.timer);
-      //deletes itself after 24 frames or 1 second
-      if(this.timer > 24){
-        delete Bullet.list[this.id];
-        this.destroyed = true;
-      }
-
-      this.cell = cell;
-
-      //checks if the cell is occupied
-      this.checkOccupied();
-
+        if(!this.destroyed)
+        {
+            this.timer ++;  
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed ;
+            //console.log(this.timer);
+            //deletes itself after 24 frames or 1 second
+            if(this.timer > 24){
+                this.destroyed = true;
+                delete Bullet.list[this.id];
+            }
+      
+            this.cell = cell;
+      
+            //checks if the cell is occupied
+            this.checkOccupied();
+      
+        }
+ 
     }
     
     checkOccupied()

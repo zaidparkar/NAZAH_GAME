@@ -1,4 +1,5 @@
 import {Player} from '../model/Player'
+import { Bullet } from '../model/Bullet';
 const io = require('socket.io-client');
 
 
@@ -16,7 +17,7 @@ const syncTime = 4;
 let syncTimer = 0;
 
 
-
+//-----------------------------------recieve----------------------------
 
 socket.on('connect', (socketId) =>
 {
@@ -41,19 +42,20 @@ socket.on('init', (socketId)=>
 //update the player list
 socket.on('update', (pack) =>
 {
-    for(const i in pack){
+
+    for(const i in pack.player){
         //get data on one user
-        let data = pack[i];
+        let data = pack.player[i];
 
         let player;
 
         //check if the player is new or not
         if(Player.list[data.id] != null)
         {
-            console.log("Boring, its the same old player");
+            //console.log("Boring, its the same old player");
             player = Player.list[data.id];
         }else{
-            console.log("yahoo, new player");
+            //console.log("yahoo, new player");
             player = new Player(data.id);
         }
         //update the data of all the player
@@ -64,6 +66,41 @@ socket.on('update', (pack) =>
             player.angle = data.angle;
         }
     }
+    for(const i in pack.bullet){
+        //get data on one user
+        let data = pack.bullet[i];
+
+        let bullet;
+
+        //check if the Bullet is new or not
+        if(data.destroyed)
+        {
+            //delete the bullet if the bullet is destroyed
+            delete Bullet.list[data.id];
+        }else{
+
+            //if null create one
+            //else select the exixting one
+            if(Bullet.list[data.id] != null)
+            {
+                bullet = Bullet.list[data.id];
+            }else{
+
+                bullet = new Bullet(data.id);
+            }
+            //update the data of all the player
+            if(bullet.playerId != selfPlayer.id || !sync)
+            {
+                bullet.x = data.x;
+                bullet.y = data.y;
+                bullet.angle = data.angle;
+            }
+
+        }
+        
+    }
+
+
     sync = true;
     syncTimer = 0;
 });
@@ -74,19 +111,44 @@ socket.on('update', (pack) =>
 //we delete the player
 socket.on('playerDisconnected', (socketId) =>
 {
+    Player.list[socketId].clearGrid();
     delete Player.list[socketId];
 });
 
 
 
 
-
+//-----------------------------emit-----------------------------------
 
 
 
 //send the player data to the server
 setInterval(()=>{
+
+    const bulletData = [];
+    
+    for (const i in Player.bulletList)
+    {
+        const bullet = Player.bulletList[i];
+
+        const destroyed = bullet.destroyed;
+        //add the required data into the list
+        bulletData.push({
+            id: bullet.id,
+            x: bullet.x,
+            y: bullet.y,
+            angle: bullet.angle,
+            destroyed: destroyed
+        });
+
+        if(destroyed){
+            console.log("destroyed confirmed");
+            delete Player.bulletList[i];
+        }
+    }
+
     //if the player is available then send the data
+    //emits bulletData
     if(selfPlayer)
     {
         socket.emit("playerData", {
@@ -94,6 +156,8 @@ setInterval(()=>{
             y : selfPlayer.y,
             angle : selfPlayer.angle
         });
+
+        socket.emit("bulletData", bulletData);
     }
 
     //checks if the game is in sync with the server

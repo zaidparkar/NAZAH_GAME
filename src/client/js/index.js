@@ -35,7 +35,8 @@ const Update = () =>{
         base.elements.ctxMain.clearRect(0,0,500,500);
 
         mapView.drawMap(base.elements.ctxMain);
-        mapView.drawGrid(base.elements.ctxMain, CollisionSystem.grid);
+        //grid debug
+        //mapView.drawGrid(base.elements.ctxMain, CollisionSystem.grid);
 
         
 
@@ -58,7 +59,7 @@ const Update = () =>{
             bulletView.drawBullet(bullet, base.elements.ctxMain);
             
         }
-
+        
         
 
         //draws the player in the canvas
