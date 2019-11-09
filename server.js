@@ -17,13 +17,13 @@ app.get('/', function (req, res) {
 
 
 //Player class to store movement and angle
-class Player{
+class Entity{
 
     constructor(id)
     {
         this.id = id;
         this.isUpdated = false;
-        Player.list[id] = this;
+
     }
 
     update(data)
@@ -36,8 +36,32 @@ class Player{
 
 
 }
-Player.list ={};
 
+class Player extends Entity{
+
+    constructor(id)
+    {
+        super(id);
+        Player.list[id] = this;
+        this.health = 100;
+    }
+}
+
+//Bullet class to store the info of the Bullet
+class Bullet extends Entity{
+
+    constructor(id,playerId)
+    {
+        super(id);
+        this.playerId = playerId;
+        Bullet.list[this.id] = this;
+    }
+}
+
+
+
+Player.list ={};
+Bullet.list ={};
 // This is list all the sockets connected to the server
 const socketList = {};
 
