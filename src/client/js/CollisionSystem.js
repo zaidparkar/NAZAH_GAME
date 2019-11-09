@@ -135,7 +135,14 @@ export const getSurroundingCell = (player) =>
      
     return cells;
 
-        }
+}
+
+//get cell with an x and y pos
+export const getCell = (x, y) => {
+
+    const cellNumber = getCellNumber(x, y);
+    return grid[cellNumber];
+} 
 
 
 //for testing purposes
