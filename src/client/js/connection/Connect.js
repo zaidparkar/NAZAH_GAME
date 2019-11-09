@@ -114,7 +114,3 @@ setInterval(()=>{
 
 selfPlayer = new Player(12223);
 
-
-
-
-

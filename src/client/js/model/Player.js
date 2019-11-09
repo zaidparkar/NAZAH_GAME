@@ -1,6 +1,7 @@
 import {Entity} from './Entity';
 import { Bullet } from './Bullet';
 
+
 export class Player extends Entity {
     //player consturtor needs an Id
     //player needs health 
@@ -29,6 +30,9 @@ export class Player extends Entity {
         this.fireRate = 250;
 
         this.isShot = false;
+
+        // occupied cells in the map
+        this.cells = null;
         
 
         //variable used in ischanged function to know if the player moved
@@ -47,17 +51,26 @@ export class Player extends Entity {
 
     //updates the movement
     // it recieves the controls key and angle from the mouse movement as the parameters
-    update(movement, angle, click){
+    update(movement, angle, click, cells){
+
+        //check the cells for collision
+        this.cells = cells;
+        const restrict = this.restriction();
+
+        //console.log(restrict.up);
+        //console.log(restrict.right);
+        //console.log(restrict.down);        
+        //console.log(restrict.left);
 
         //updates the position if any key is pressed
         if(movement.pressingRight){
-            this.x += this.speed;
+            this.x += (this.speed * restrict.right);
         } else if (movement.pressingUp){
-            this.y += this.speed;
+            this.y -= (this.speed * restrict.up);
         } else if (movement.pressingLeft){
-            this.x -= this.speed;
+            this.x -= (this.speed * restrict.left);
         } else if (movement.pressingDown){
-            this.y -= this.speed;
+            this.y += (this.speed * restrict.down);
         } 
         
 
@@ -71,6 +84,49 @@ export class Player extends Entity {
         this.angle = angle;
 
         //this.shoot(click);
+
+    }
+
+
+    //restricts the movement according to the collision
+    restriction(){
+
+        let up = 1;
+        let right = 1;
+        let down = 1;
+        let left = 1;
+
+
+        for(let i = 0; i < this.cells.length; i++){
+            const cell = this.cells[i];
+
+            if(cell.occupied)
+            {
+                if(cell.id != this.id)
+                {
+                    if(i == 0 || i == 1)
+                    {
+                        up = 0;
+                    }else if(i == 2 || i==3)
+                    {
+                        right = 0;
+                    }else if(i==4|| i==5)
+                    {
+                        down = 0;
+                    }else if(i == 6 || i == 7)
+                    {
+                        left = 0;
+                    }
+                }
+            }
+        }
+
+        return {
+            up: up,
+            right: right,
+            down: down,
+            left: left
+        }
 
     }
 
@@ -100,7 +156,7 @@ export class Player extends Entity {
     shoot(){
 
         this.isShot = true;
-        
+
         setTimeout(() => {
 
             //shoots if there is ammo in the magazine

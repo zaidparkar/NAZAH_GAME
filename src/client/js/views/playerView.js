@@ -15,8 +15,7 @@ export const drawPlayer = (player,ctx) =>
 
     //alternates the context transform to draw the player
     // some of the values are hardcoded and waiting for replacement
-    ctx.height = 75;
-    ctx.width = 50;
+
     ctx.translate(player.x, player.y);
     ctx.rotate(player.angle);
     ctx.drawImage(img, -img.width/2, -img.height/2, img.width, img.height);
