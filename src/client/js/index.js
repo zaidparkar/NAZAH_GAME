@@ -47,7 +47,11 @@ const Update = () =>{
         
         for(const i in Bullet.list){
             const bullet = Bullet.list[i];
-            bullet.update();
+            //gets the cell to check for collision
+            const cell = CollisionSystem.getCell(bullet.x, bullet.y);
+            //updates the bullet
+            bullet.update(cell);
+            //draws the bullet
             bulletView.drawBullet(bullet, base.elements.ctxMain);
             
         }
@@ -59,6 +63,7 @@ const Update = () =>{
         {
             const player = Player.list[id];
             playerView.drawPlayer(player, base.elements.ctxMain);
+            //updates the grid
             CollisionSystem.updateGridWithPlayer(player);
         }
         

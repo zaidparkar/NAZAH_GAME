@@ -15,9 +15,9 @@ export class Player extends Entity {
 
 
         //The ammount of ammo a mag can hold
-        this.magSize = 3;
+        this.magSize = 30;
         //The ammount of ammo person currently has in their magazine
-        this.ammoInMag = 1;
+        this.ammoInMag = 30;
         //total ammo the person has
         this.ammo = 180;
 
@@ -27,7 +27,7 @@ export class Player extends Entity {
 
 
         //fire rate of the gun
-        this.fireRate = 250;
+        this.fireRate = 360;
 
         this.isShot = false;
 
@@ -162,7 +162,8 @@ export class Player extends Entity {
             //shoots if there is ammo in the magazine
             if(this.ammoInMag > 0)
             {
-                const bullet = new Bullet(Math.random(),this.x,this.y);
+                //create the bullet
+                const bullet = new Bullet(Math.random(),this.id,this.x,this.y);
                 bullet.angle=this.angle;
     
                 //Reduce the ammo in mag 
