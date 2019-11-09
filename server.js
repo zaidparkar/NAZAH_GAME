@@ -148,6 +148,7 @@ setInterval(()=> {
             {
                 pack.bullet.push({
                     id: bullet.id,
+                    playerId:bullet.playerId,
                     destroyed:true
                 });
                 delete Bullet.list[id];

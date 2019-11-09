@@ -76,21 +76,26 @@ socket.on('update', (pack) =>
         if(data.destroyed)
         {
             //delete the bullet if the bullet is destroyed
-            delete Bullet.list[data.id];
+            if(Bullet.list[data.id])
+            {
+                delete Bullet.list[data.id];
+            }
         }else{
 
-            //if null create one
-            //else select the exixting one
-            if(Bullet.list[data.id] != null)
-            {
-                bullet = Bullet.list[data.id];
-            }else{
-
-                bullet = new Bullet(data.id);
-            }
             //update the data of all the player
-            if(bullet.playerId != selfPlayer.id || !sync)
+            if(data.playerId != selfPlayer.id || !sync)
             {
+
+                //if null create one
+                //else select the exixting one
+                if(Bullet.list[data.id] != null)
+                {
+                    bullet = Bullet.list[data.id];
+                }else{
+
+                    bullet = new Bullet(data.id);
+                }
+
                 bullet.x = data.x;
                 bullet.y = data.y;
                 bullet.angle = data.angle;
@@ -131,18 +136,16 @@ setInterval(()=>{
     {
         const bullet = Player.bulletList[i];
 
-        const destroyed = bullet.destroyed;
         //add the required data into the list
         bulletData.push({
             id: bullet.id,
             x: bullet.x,
             y: bullet.y,
             angle: bullet.angle,
-            destroyed: destroyed
+            destroyed: bullet.destroyed
         });
 
-        if(destroyed){
-            console.log("destroyed confirmed");
+        if(bullet.destroyed){
             delete Player.bulletList[i];
         }
     }

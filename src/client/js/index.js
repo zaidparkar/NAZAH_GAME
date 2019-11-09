@@ -48,13 +48,15 @@ const Update = () =>{
 
         // updates movement and the angle
         selfPlayer.update(controls.movement, controls.angle, controls.click, cells);
+
+
         
         for(const i in Bullet.list){
             const bullet = Bullet.list[i];
             //gets the cell to check for collision
             const cell = CollisionSystem.getCell(bullet.x, bullet.y);
             //updates the bullet
-            bullet.update(cell);
+            bullet.update(CollisionSystem.getCell);
             //draws the bullet
             bulletView.drawBullet(bullet, base.elements.ctxMain);
             

@@ -7,17 +7,17 @@ export class Bullet extends Entity{
       Bullet.list[this.id] = this;
       this.playerId = playerId;
       this.timer = 0;
-      this.speed = 24;
-      this.cell = null;
+      this.speed = 100;
       this.destroyed = false;
     }
 
-    update(cell){
+    update(getCell){
         if(!this.destroyed)
         {
             this.timer ++;  
-            this.x += Math.cos(this.angle) * this.speed;
-            this.y += Math.sin(this.angle) * this.speed ;
+            const pos = this.move(this.speed);
+            this.x = pos.x;
+            this.y = pos.y;
             //console.log(this.timer);
             //deletes itself after 24 frames or 1 second
             if(this.timer > 24){
@@ -25,22 +25,38 @@ export class Bullet extends Entity{
                 delete Bullet.list[this.id];
             }
       
-            this.cell = cell;
       
             //checks if the cell is occupied
-            this.checkOccupied();
+            this.hitRay(getCell);
       
         }
  
     }
     
-    checkOccupied()
+
+    hitRay(getCell)
     {
-        //deletes if the cell is occupied and the cell id is not the playerId
-        if(this.cell.occupied && this.cell.id != this.playerId)
+        for (let i = 0; i < this.speed; i +=25)
         {
-            this.destroyed = true;
-            delete Bullet.list[this.id];
+            const pos = this.move(i);
+            const cell = getCell(pos.x, pos.y);
+            if(cell.occupied && cell.id != this.playerId)
+            {
+                console.log("Bullet got hit from hit ray");
+                this.destroyed = true;
+                delete Bullet.list[this.id];
+            }
+        }
+    }
+
+    move(dist)
+    {
+        let x = this.x + (Math.cos(this.angle) * dist);
+        let y = this.y + (Math.sin(this.angle) * dist);
+
+        return{
+            x:x,
+            y:y
         }
     }
 
