@@ -5,7 +5,6 @@ import * as bulletView from './views/bulletView';
 import * as base from './views/base';
 import {getControl} from './Control';
 import {Bullet} from './model/Bullet';
-import {cells} from './CollisionSystem';
 import * as mapView from './views/mapView';
 import * as CollisionSystem from './CollisionSystem';
 
@@ -40,6 +39,9 @@ const Update = () =>{
         //get the input controls
         const controls = getControl(selfPlayer);
 
+        //get the surrounding cells
+        const cells = CollisionSystem.getSurroundingCell(selfPlayer);
+
         // updates movement and the angle
         selfPlayer.update(controls.movement, controls.angle, controls.click, cells);
         
@@ -57,6 +59,7 @@ const Update = () =>{
         {
             const player = Player.list[id];
             playerView.drawPlayer(player, base.elements.ctxMain);
+            CollisionSystem.updateGridWithPlayer(player);
         }
         
     }

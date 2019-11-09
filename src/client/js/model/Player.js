@@ -1,6 +1,7 @@
 import {Entity} from './Entity';
 import { Bullet } from './Bullet';
 
+
 export class Player extends Entity {
     //player consturtor needs an Id
     //player needs health 
@@ -29,6 +30,9 @@ export class Player extends Entity {
         this.fireRate = 250;
 
         this.isShot = false;
+
+        // occupied cells in the map
+        this.cells = null;
         
 
         //variable used in ischanged function to know if the player moved
@@ -50,7 +54,8 @@ export class Player extends Entity {
     update(movement, angle, click, cells){
 
         //check the cells for collision
-        const restrict = this.restriction(cells);
+        this.cells = cells;
+        const restrict = this.restriction();
 
         //console.log(restrict.up);
         //console.log(restrict.right);
@@ -84,31 +89,34 @@ export class Player extends Entity {
 
 
     //restricts the movement according to the collision
-    restriction(cells){
+    restriction(){
 
         let up = 1;
         let right = 1;
         let down = 1;
         let left = 1;
 
-        for(let i = 0; i < cells.length; i++){
-            const cell = cells[i];
+
+        for(let i = 0; i < this.cells.length; i++){
+            const cell = this.cells[i];
 
             if(cell.occupied)
             {
-
-                if(i == 0 || i == 1)
+                if(cell.id != this.id)
                 {
-                    up = 0;
-                }else if(i == 2 || i==3)
-                {
-                    right = 0;
-                }else if(i==4|| i==5)
-                {
-                    down = 0;
-                }else if(i == 6 || i == 7)
-                {
-                    left = 0;
+                    if(i == 0 || i == 1)
+                    {
+                        up = 0;
+                    }else if(i == 2 || i==3)
+                    {
+                        right = 0;
+                    }else if(i==4|| i==5)
+                    {
+                        down = 0;
+                    }else if(i == 6 || i == 7)
+                    {
+                        left = 0;
+                    }
                 }
             }
         }

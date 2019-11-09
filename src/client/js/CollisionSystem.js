@@ -1,18 +1,22 @@
 
 
+
 export const grid = [];
 
-
+//map size
 const mapSize = {
     x: 500,
     y: 500
 };
 
+//cell size
 const cellSize = {
     x: 25,
     y: 25
 }
 
+//color of the wall
+//used in gridding the map
 const wallColor = {
     r:149,
     g:134,
@@ -30,20 +34,20 @@ class Cell{
 
 }
 
-//for testing
-const img = new Image();
+
+
+//setting the rows and columns for the grid
+const columns = (mapSize.x/cellSize.x);
+const rows = (mapSize.y/cellSize.y);
 
 
 //this maps the grid
 export const mapTheGrid = (ctx) =>{
 
-    const columns = (mapSize.x/cellSize.x);
-    const rows = (mapSize.y/cellSize.y);
-
+    //sets the y to the starting point
     let y = parseInt(-cellSize.y/2);
 
-
-
+    //gridding the map from left to right then top to bottom
     for(let i = 0; i < columns; i++)
     {
         
@@ -54,25 +58,88 @@ export const mapTheGrid = (ctx) =>{
         {
 
             x+= cellSize.x;
+
+            //get the image data
             const pixel = ctx.getImageData(x, y, 1, 1);
             let occupied = false;
+            //if the color matches the wall color then occpied = true
             if(pixel.data[0] == wallColor.r && pixel.data[1] == wallColor.g && pixel.data[2] == wallColor.b){
                 occupied = true;
             }
-            ctx.putImageData(pixel, x, y);
-
+            //push the new cell in the grid
             grid.push(new Cell(occupied));
         }
     }
 
 };
 
+//updates the grid with player movement
+//if a player moves, the cells that are occupied by the player changes
+//the function below does the job
+
+export const updateGridWithPlayer = (player) =>
+{
+    //the player can cover four cells like a square
+    //the cellnumber returns the top left cell.
+    const cellNumber = getCellNumber(player.x, player.y);
+
+    //unoccupy the previous cells
+    for(const cell in player.cells){
+        occupy(cell, false);
+    }
+
+    //occupying all the cells 
+    occupy(cellNumber,true, player.id);
+    occupy(cellNumber + 1,true,player.id);
+    occupy(cellNumber + columns,true, player.id);
+    occupy(cellNumber + columns + 1,true, player.id);
+
+};
+
+//get the index of the cell with x and y position
+const getCellNumber = (x, y) =>
+{
+    const resY = parseInt(y/25) * 20;
+    const resX = parseInt(x/25);
+
+    return resX + resY ;
+}
+
+//function below occupies a cells in the grid
+const occupy = (index, isOccupy = true, id = null) =>
+{
+    if(isNaN(index))
+    {
+        const cell = index;
+        cell.occupied = isOccupy;
+        cell.id = id;
+    }else{
+        grid[index].occupied = isOccupy;
+        grid[index].id = id;
+    }
+    
+};
+
+
+//get the surrounding cells for the player
+//this is to know if the surrounding is occupied or not
+export const getSurroundingCell = (player) =>
+{
+    
+    const cellNumber = getCellNumber(player.x, player.y);
+    const cells =  [grid[cellNumber - columns], grid[cellNumber - (columns - 1)],//top
+            grid[cellNumber + 2], grid[cellNumber + columns + 2],//right
+            grid[cellNumber + (columns * 2) + 1], grid[cellNumber + (columns * 2)],//bottom
+            grid[cellNumber + (columns - 1)], grid[cellNumber -1]];//left
+
+     
+    return cells;
+
+        }
+
+
 //for testing purposes
 //send the surounding cells to the player
-export const cells = [new Cell(false),new Cell(false),
-                    new Cell(false),new Cell(false),
-                    new Cell(false),new Cell(false),
-                    new Cell(false),new Cell(false)];
 
 
 
