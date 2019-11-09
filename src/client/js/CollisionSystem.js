@@ -81,18 +81,18 @@ export const updateGridWithPlayer = (player) =>
 {
     //the player can cover four cells like a square
     //the cellnumber returns the top left cell.
-    const cellNumber = getCellNumber(player.x, player.y);
+    const cellNumber = getCellNumber(player.x-25, player.y-25);
 
-    //unoccupy the previous cells
-    for(const cell in player.cells){
-        occupy(cell, false);
-    }
 
     //occupying all the cells 
-    occupy(cellNumber,true, player.id);
-    occupy(cellNumber + 1,true,player.id);
-    occupy(cellNumber + columns,true, player.id);
-    occupy(cellNumber + columns + 1,true, player.id);
+    const cells = [grid[cellNumber],
+                    grid[cellNumber +1],
+                    grid[cellNumber+columns],
+                    grid[cellNumber+columns+1]];
+
+
+    player.occupyGrid(cells);                
+
 
 };
 
@@ -125,8 +125,10 @@ const occupy = (index, isOccupy = true, id = null) =>
 //this is to know if the surrounding is occupied or not
 export const getSurroundingCell = (player) =>
 {
-    
-    const cellNumber = getCellNumber(player.x, player.y);
+    //gets the cell number from the player position
+    //we deduct 25 so that we can get the top left of the character
+    const cellNumber = getCellNumber(player.x-25, player.y-25);
+
     const cells =  [grid[cellNumber - columns], grid[cellNumber - (columns - 1)],//top
             grid[cellNumber + 2], grid[cellNumber + columns + 2],//right
             grid[cellNumber + (columns * 2) + 1], grid[cellNumber + (columns * 2)],//bottom

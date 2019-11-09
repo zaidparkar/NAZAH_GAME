@@ -33,8 +33,13 @@ const Update = () =>{
         //gets the context of the canvas
         //clears it
         base.elements.ctxMain.clearRect(0,0,500,500);
+        console.log(selfPlayer.health);
 
         mapView.drawMap(base.elements.ctxMain);
+        //grid debug
+        //mapView.drawGrid(base.elements.ctxMain, CollisionSystem.grid);
+
+        
 
         //get the input controls
         const controls = getControl(selfPlayer);
@@ -44,18 +49,20 @@ const Update = () =>{
 
         // updates movement and the angle
         selfPlayer.update(controls.movement, controls.angle, controls.click, cells);
+
+
         
         for(const i in Bullet.list){
             const bullet = Bullet.list[i];
             //gets the cell to check for collision
             const cell = CollisionSystem.getCell(bullet.x, bullet.y);
             //updates the bullet
-            bullet.update(cell);
+            bullet.update(CollisionSystem.getCell);
             //draws the bullet
             bulletView.drawBullet(bullet, base.elements.ctxMain);
             
         }
-
+        
         
 
         //draws the player in the canvas
@@ -66,6 +73,7 @@ const Update = () =>{
             //updates the grid
             CollisionSystem.updateGridWithPlayer(player);
         }
+        
         
     }
 

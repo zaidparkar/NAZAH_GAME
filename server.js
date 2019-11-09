@@ -17,13 +17,13 @@ app.get('/', function (req, res) {
 
 
 //Player class to store movement and angle
-class Player{
+class Entity{
 
     constructor(id)
     {
         this.id = id;
         this.isUpdated = false;
-        Player.list[id] = this;
+
     }
 
     update(data)
@@ -36,8 +36,42 @@ class Player{
 
 
 }
-Player.list ={};
 
+class Player extends Entity{
+
+    constructor(id)
+    {
+        super(id);
+        Player.list[id] = this;
+        this.health = 100;
+    }
+}
+
+//Bullet class to store the info of the Bullet
+class Bullet extends Entity{
+
+    constructor(id,playerId)
+    {
+        super(id);
+        this.playerId = playerId;
+        Bullet.list[this.id] = this;
+    }
+
+    update(data){
+        super.update(data);
+        this.destroyed = data.destroyed;
+        this.hitId = data.hitId;
+        if(this.hitId != null)
+        {
+            Player.list[this.hitId].health -=25;
+        }
+    }
+}
+
+
+
+Player.list ={};
+Bullet.list ={};
 // This is list all the sockets connected to the server
 const socketList = {};
 
@@ -65,27 +99,79 @@ io.on('connection', (socket) => {
     //checks for the player data coming from 
     socket.on('playerData', (data)=> {
         player.update(data);
+    });
+
+    socket.on('bulletData', (data) => {
+        
+
+        for(let i = 0; i < data.length; i++)
+        {
+            const bullet = data[i];
+
+                let b = null;
+                if(Bullet.list[bullet.id])
+                {
+                    b = Bullet.list[bullet.id];
+                }else{
+                    b = new Bullet(bullet.id, player.id);
+                }
+                b.update(bullet);            
+
+        }
+        
     })
 
 });
 
 //every 40ms the server updates the client of all the players
 setInterval(()=> {
-        let pack=[];
+        let pack={
+            player:[],
+            bullet:[]
+        };
         for(let id in Player.list){
-            player = Player.list[id];
+            const player = Player.list[id];
 
             if(player.isUpdated)
             {
-                pack.push({
+                pack.player.push({
                     id: player.id,
                     x: player.x,
                     y: player.y,
-                    angle: player.angle
+                    angle: player.angle,
+                    health: player.health
                 });
                 player.isUpdated = false;
             }
             
+        }
+
+        for(let id in Bullet.list)
+        {
+            const bullet =  Bullet.list[id];
+
+            if(bullet.destroyed)
+            {
+                pack.bullet.push({
+                    id: bullet.id,
+                    playerId:bullet.playerId,
+                    destroyed:true
+                });
+                delete Bullet.list[id];
+            }else{
+                if(bullet.isUpdated)
+                {
+                    pack.bullet.push({
+                        id: bullet.id,
+                        x: bullet.x,
+                        y: bullet.y,
+                        angle: bullet.angle,
+                        playerId: bullet.playerId,
+                        destroyed: bullet.destroyed
+                    });
+                    bullet.isUpdated = false;
+                }
+            }
         }
 
 
