@@ -30,10 +30,8 @@ export class Player extends Entity {
         this.fireRate = 360;
 
         this.isShot = false;
-
-        // occupied cells in the map
-        this.cells = null;
         
+        this.cells = [];
 
         //variable used in ischanged function to know if the player moved
         this.preMovement = {
@@ -54,8 +52,7 @@ export class Player extends Entity {
     update(movement, angle, click, cells){
 
         //check the cells for collision
-        this.cells = cells;
-        const restrict = this.restriction();
+        const restrict = this.restriction(cells);
 
         //console.log(restrict.up);
         //console.log(restrict.right);
@@ -89,7 +86,7 @@ export class Player extends Entity {
 
 
     //restricts the movement according to the collision
-    restriction(){
+    restriction(cells){
 
         let up = 1;
         let right = 1;
@@ -97,8 +94,8 @@ export class Player extends Entity {
         let left = 1;
 
 
-        for(let i = 0; i < this.cells.length; i++){
-            const cell = this.cells[i];
+        for(let i = 0; i < cells.length; i++){
+            const cell = cells[i];
 
             if(cell.occupied)
             {
@@ -164,6 +161,9 @@ export class Player extends Entity {
             {
                 //create the bullet
                 const bullet = new Bullet(Math.random(),this.id,this.x,this.y);
+                //saves the bullet in the bulletList
+                Player.bulletList[bullet.id] = bullet;
+
                 bullet.angle=this.angle;
     
                 //Reduce the ammo in mag 
@@ -205,6 +205,29 @@ export class Player extends Entity {
 
     }
 
+
+    occupyGrid(cells)
+    {
+        this.clearGrid();
+
+        this.cells = cells;
+        for (let i = 0; i < this.cells.length; i++)
+        {
+            this.cells[i].occupied = true;
+            this.cells[i].id = this.id;
+        }
+    }
+    //clears the cells the players occupied 
+    clearGrid(){
+        
+        for (let i = 0; i < this.cells.length; i++)
+        {
+            this.cells[i].occupied = false;
+            this.cells[i].id = null;
+        }
+    }
+
+
     //write the function
     //iterate through all the players
     //
@@ -217,3 +240,6 @@ export class Player extends Entity {
 //So basically all the players in the server
 //This wil only be useful when there is server side implementation
 Player.list={};
+
+//This will store all the bullet shot by the player
+Player.bulletList = {};

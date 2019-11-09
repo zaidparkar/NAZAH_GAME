@@ -9,16 +9,18 @@ export class Bullet extends Entity{
       this.timer = 0;
       this.speed = 24;
       this.cell = null;
+      this.destroyed = false;
     }
 
     update(cell){
       this.timer ++;  
       this.x += Math.cos(this.angle) * this.speed;
       this.y += Math.sin(this.angle) * this.speed ;
-      console.log(this.timer);
+      //console.log(this.timer);
       //deletes itself after 24 frames or 1 second
       if(this.timer > 24){
         delete Bullet.list[this.id];
+        this.destroyed = true;
       }
 
       this.cell = cell;
@@ -33,6 +35,7 @@ export class Bullet extends Entity{
         //deletes if the cell is occupied and the cell id is not the playerId
         if(this.cell.occupied && this.cell.id != this.playerId)
         {
+            this.destroyed = true;
             delete Bullet.list[this.id];
         }
     }

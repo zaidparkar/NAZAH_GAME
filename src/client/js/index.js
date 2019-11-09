@@ -35,6 +35,9 @@ const Update = () =>{
         base.elements.ctxMain.clearRect(0,0,500,500);
 
         mapView.drawMap(base.elements.ctxMain);
+        mapView.drawGrid(base.elements.ctxMain, CollisionSystem.grid);
+
+        
 
         //get the input controls
         const controls = getControl(selfPlayer);
@@ -66,6 +69,7 @@ const Update = () =>{
             //updates the grid
             CollisionSystem.updateGridWithPlayer(player);
         }
+        
         
     }
 
