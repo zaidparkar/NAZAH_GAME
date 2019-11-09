@@ -60,6 +60,11 @@ class Bullet extends Entity{
     update(data){
         super.update(data);
         this.destroyed = data.destroyed;
+        this.hitId = data.hitId;
+        if(this.hitId != null)
+        {
+            Player.list[this.hitId].health -=25;
+        }
     }
 }
 
@@ -133,7 +138,8 @@ setInterval(()=> {
                     id: player.id,
                     x: player.x,
                     y: player.y,
-                    angle: player.angle
+                    angle: player.angle,
+                    health: player.health
                 });
                 player.isUpdated = false;
             }

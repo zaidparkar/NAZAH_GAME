@@ -65,6 +65,8 @@ socket.on('update', (pack) =>
             player.y = data.y;
             player.angle = data.angle;
         }
+        player.health = data.health;
+        
     }
     for(const i in pack.bullet){
         //get data on one user
@@ -142,7 +144,8 @@ setInterval(()=>{
             x: bullet.x,
             y: bullet.y,
             angle: bullet.angle,
-            destroyed: bullet.destroyed
+            destroyed: bullet.destroyed,
+            hitId: bullet.hitId
         });
 
         if(bullet.destroyed){

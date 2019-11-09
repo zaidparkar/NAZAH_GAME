@@ -9,6 +9,7 @@ export class Bullet extends Entity{
       this.timer = 0;
       this.speed = 100;
       this.destroyed = false;
+      this.hitId = null;
     }
 
     update(getCell){
@@ -44,6 +45,7 @@ export class Bullet extends Entity{
             {
                 console.log("Bullet got hit from hit ray");
                 this.destroyed = true;
+                this.hitId = cell.id;
                 delete Bullet.list[this.id];
             }
         }

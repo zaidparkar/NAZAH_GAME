@@ -33,6 +33,7 @@ const Update = () =>{
         //gets the context of the canvas
         //clears it
         base.elements.ctxMain.clearRect(0,0,500,500);
+        console.log(selfPlayer.health);
 
         mapView.drawMap(base.elements.ctxMain);
         //grid debug
