@@ -4,13 +4,13 @@
 export const grid = [];
 
 //map size
-const mapSize = {
-    x: 500,
-    y: 500
+export const mapSize = {
+    x: 4000,
+    y: 4000
 };
 
 //cell size
-const cellSize = {
+export const cellSize = {
     x: 25,
     y: 25
 }
@@ -18,9 +18,9 @@ const cellSize = {
 //color of the wall
 //used in gridding the map
 const wallColor = {
-    r:149,
-    g:134,
-    b:129   
+    r:71,
+    g:71,
+    b:71   
 }
 
 
@@ -81,7 +81,7 @@ export const updateGridWithPlayer = (player) =>
 {
     //the player can cover four cells like a square
     //the cellnumber returns the top left cell.
-    const cellNumber = getCellNumber(player.x-25, player.y-25);
+    const cellNumber = getCellNumber(player.x-cellSize.x, player.y-cellSize.y);
 
 
     //occupying all the cells 
@@ -99,8 +99,8 @@ export const updateGridWithPlayer = (player) =>
 //get the index of the cell with x and y position
 const getCellNumber = (x, y) =>
 {
-    const resY = parseInt(y/25) * 20;
-    const resX = parseInt(x/25);
+    const resY = parseInt(y/cellSize.y) * columns;
+    const resX = parseInt(x/cellSize.x);
 
     return resX + resY ;
 }
@@ -127,7 +127,7 @@ export const getSurroundingCell = (player) =>
 {
     //gets the cell number from the player position
     //we deduct 25 so that we can get the top left of the character
-    const cellNumber = getCellNumber(player.x-25, player.y-25);
+    const cellNumber = getCellNumber(player.x-cellSize.x, player.y-cellSize.y);
 
     const cells =  [grid[cellNumber - columns], grid[cellNumber - (columns - 1)],//top
             grid[cellNumber + 2], grid[cellNumber + columns + 2],//right
