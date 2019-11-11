@@ -41,12 +41,15 @@ export class Bullet extends Entity{
         {
             const pos = this.move(i);
             const cell = getCell(pos.x, pos.y);
-            if(cell.occupied && cell.id != this.playerId)
+            if(cell)
             {
-                console.log("Bullet got hit from hit ray");
-                this.destroyed = true;
-                this.hitId = cell.id;
-                delete Bullet.list[this.id];
+                if(cell.occupied && cell.id != this.playerId)
+                {
+                    console.log("Bullet got hit from hit ray");
+                    this.destroyed = true;
+                    this.hitId = cell.id;
+                    delete Bullet.list[this.id];
+                }
             }
         }
     }

@@ -10,14 +10,27 @@ import * as CollisionSystem from './CollisionSystem';
 
 
 
+const mapwidth = CollisionSystem.mapSize.x;
+const mapheight = CollisionSystem.mapSize.y;
+
+const screenWidth = window.innerWidth;
+const screenHeight = window.innerWidth;
 
 const init = () =>
 {
     //base.elements.ctxMain.clearRect(0,0,500,500);
     //draw the map
+
+    base.elements.canvasMain.height = mapheight;
+    base.elements.canvasMain.width = mapwidth;
+    
+
     mapView.drawMap(base.elements.ctxMain);
 
     CollisionSystem.mapTheGrid(base.elements.ctxMain);
+
+    base.elements.canvasMain.height = screenHeight;
+    base.elements.canvasMain.width = screenWidth;
 
     //runs the interval in 25 fps
     setInterval(Update , 1000/25);
@@ -32,7 +45,7 @@ const Update = () =>{
     {
         //gets the context of the canvas
         //clears it
-        base.elements.ctxMain.clearRect(0,0,500,500);
+        base.elements.ctxMain.clearRect(0,0,screenWidth,screenHeight);
         console.log(selfPlayer.health);
 
         mapView.drawMap(base.elements.ctxMain);
