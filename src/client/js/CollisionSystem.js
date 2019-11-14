@@ -3,6 +3,7 @@
 
 export const grid = [];
 
+
 //map size
 export const mapSize = {
     x: 4000,
@@ -30,6 +31,7 @@ class Cell{
     constructor(occupied, id = null){
         this.occupied = occupied;
         this.id = id;
+        this.obj = null;
     }
 
 }
@@ -72,6 +74,7 @@ export const mapTheGrid = (ctx) =>{
     }
 
 };
+
 
 //updates the grid with player movement
 //if a player moves, the cells that are occupied by the player changes
@@ -147,10 +150,41 @@ export const getCell = (x, y) => {
 } 
 
 
-//for testing purposes
-//send the surounding cells to the player
+//objective maping
 
 
+const numOfobjectives = 3;
+
+export const mapTheObjective = (ctx) => {
+
+
+    let y = -(cellSize.y/2)
+
+    for(let i = 0; i < columns; i++)
+    {
+        y +=cellSize.y;
+
+        let x = -(cellSize.x/2)
+
+        for(let j = 0 ; j < rows; j++)
+        {
+            x += cellSize.x;
+            let pixel = ctx.getImageData(x,y,1,1);
+            for(let k = 0; k < numOfobjectives; k ++)
+            {
+                if(pixel.data[0] == k)
+                {
+                    const cell = getCellNumber(x,y);
+                    grid[cell].obj = k;
+                    break;
+                }
+            }
+            
+        }
+        
+        
+    }
+};
 
 
 

@@ -29,6 +29,12 @@ const init = () =>
 
     CollisionSystem.mapTheGrid(base.elements.ctxMain);
 
+    mapView.drawMapObj(base.elements.ctxMain);
+
+    CollisionSystem.mapTheObjective(base.elements.ctxMain);
+
+    mapView.drawMap(base.elements.ctxMain);
+
     base.elements.canvasMain.height = screenHeight;
     base.elements.canvasMain.width = screenWidth;
 
@@ -101,7 +107,8 @@ const Update = () =>{
 
         mapView.drawMap(base.elements.ctxMain, reltivitity.x, reltivitity.y);
         //grid debug
-        //mapView.drawGrid(base.elements.ctxMain, CollisionSystem.grid);
+        //mapView.drawGrid(base.elements.ctxMain);
+        //mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
 
         
         
