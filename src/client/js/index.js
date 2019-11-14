@@ -101,7 +101,7 @@ const Update = () =>{
 
         
         base.elements.ctxMain.clearRect(0,0,screenWidth,screenHeight);
-        console.log(selfPlayer.health);
+        console.log(selfPlayer.obj);
 
         reltivitity = getRelativeXY();
 

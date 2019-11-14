@@ -33,6 +33,9 @@ export class Player extends Entity {
         
         this.cells = [];
 
+        //the objective they are in
+        this.obj = null;
+
         //variable used in ischanged function to know if the player moved
         this.preMovement = {
             x : this.x,
@@ -210,12 +213,18 @@ export class Player extends Entity {
     {
         this.clearGrid();
 
+        let obj = null;
         this.cells = cells;
         for (let i = 0; i < this.cells.length; i++)
         {
             this.cells[i].occupied = true;
             this.cells[i].id = this.id;
+            if(this.cells[i].obj != null)
+            {
+                obj = this.cells[i].obj;
+            }
         }
+        this.obj = obj;
     }
     //clears the cells the players occupied 
     clearGrid(){
