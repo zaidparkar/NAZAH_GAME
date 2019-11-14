@@ -182,5 +182,5 @@ setInterval(()=>{
 
 //only use when testing
 
-//selfPlayer = new Player(12223);
+selfPlayer = new Player(12223);
 

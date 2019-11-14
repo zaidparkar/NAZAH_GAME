@@ -119,12 +119,12 @@ base.elements.canvasMain.addEventListener('mousemove', (e) => {
 
 //This function returns the angle of the player in terms of mouse position
 //It also returns the keypress.
-export const getControl = (player) =>{
+export const getControl = (player ,relativeX = 0, relativeY = 0)  =>{
 
     const mouseX = controlKeys.mouseX;
     const mouseY = controlKeys.mouseY;
 
-    const angle = getAngle(mouseX,mouseY,player.x, player.y) + deg_to_rad(90);
+    const angle = getAngle(mouseX,mouseY, player.x + relativeX, player.y + relativeY) + deg_to_rad(90);
 
     return{
         movement : {
