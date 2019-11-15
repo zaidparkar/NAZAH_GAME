@@ -1,5 +1,6 @@
 import {Player} from '../model/Player'
 import { Bullet } from '../model/Bullet';
+import * as GameController from '../GameController';
 const io = require('socket.io-client');
 
 
@@ -23,6 +24,7 @@ socket.on('connect', (socketId) =>
 {
     //testing
     console.log('connected');
+
 });
 
 
@@ -35,6 +37,15 @@ socket.on('init', (socketId)=>
     selfPlayer = new Player(socketId);
     console.log(socketId);
 });
+
+socket.on('objectiveUpdate', (data) =>{
+    for(let i = 0; i < data.length; i ++)
+    {
+        let obj = data[i];
+        GameController.objectives[obj.id].team0capture = obj.num0;
+        GameController.objectives[obj.id].team1capture = obj.num1;
+    }
+})
 
 
 
@@ -157,11 +168,29 @@ setInterval(()=>{
     //emits bulletData
     if(selfPlayer)
     {
+     
+        if(selfPlayer.changedTeam)
+        {
+            socket.emit("changedTeam", selfPlayer.team);
+            //console.log("connect: changedTeam sent");
+
+            selfPlayer.changedTeam = false;
+        }
+
+        if(selfPlayer.changedObj)
+        {
+            socket.emit("changedObj", selfPlayer.obj);
+            selfPlayer.changedObj = false;
+            selfPlayer.objTimer = 0;
+            console.log("Connect 184 :: yes");
+        }
+
         socket.emit("playerData", {
             x : selfPlayer.x,
             y : selfPlayer.y,
-            angle : selfPlayer.angle
+            angle : selfPlayer.angle,
         });
+
 
         socket.emit("bulletData", bulletData);
     }

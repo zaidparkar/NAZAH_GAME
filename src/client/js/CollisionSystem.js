@@ -3,6 +3,7 @@
 
 export const grid = [];
 
+
 //map size
 export const mapSize = {
     x: 4000,
@@ -30,6 +31,7 @@ class Cell{
     constructor(occupied, id = null){
         this.occupied = occupied;
         this.id = id;
+        this.obj = -1;
     }
 
 }
@@ -73,6 +75,7 @@ export const mapTheGrid = (ctx) =>{
 
 };
 
+
 //updates the grid with player movement
 //if a player moves, the cells that are occupied by the player changes
 //the function below does the job
@@ -97,7 +100,7 @@ export const updateGridWithPlayer = (player) =>
 };
 
 //get the index of the cell with x and y position
-const getCellNumber = (x, y) =>
+export const getCellNumber = (x, y) =>
 {
     const resY = parseInt(y/cellSize.y) * columns;
     const resX = parseInt(x/cellSize.x);
@@ -145,10 +148,6 @@ export const getCell = (x, y) => {
     const cellNumber = getCellNumber(x, y);
     return grid[cellNumber];
 } 
-
-
-//for testing purposes
-//send the surounding cells to the player
 
 
 

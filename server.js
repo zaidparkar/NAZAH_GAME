@@ -44,6 +44,8 @@ class Player extends Entity{
         super(id);
         Player.list[id] = this;
         this.health = 100;
+        this.team = 1;
+        this.obj = null;
     }
 }
 
@@ -68,10 +70,84 @@ class Bullet extends Entity{
     }
 }
 
+class Obj{
+
+    constructor(id)
+    {
+        this.id = id;
+        this.capturedBy = null;
+        this.capturingBy = null;
+        this.team0 = 0;
+        this.team1 = 0;
+        this.team0capture = 0;
+        this.team1capture = 0;
+        this.sendCapture = false;
+        this.isCapturing = false
+    }
+
+    capture()
+    {
+        this.isCapturing = true;
+        // runs every second
+        const main = setInterval( () =>{
+            let num = Math.abs(this.team0 - this.team1);
+            if(num > 6)
+            {
+                num = 6;
+            }
+    
+    
+            if(this.team0 > this.team1)
+            {
+                this.capturingBy = this.team0;
+                this.team0capture += (2.5 * (num * 1));
+                this.team1capture = -this.team0capture;
+            }else if(this.team1 > this.team0)
+            {
+                this.capturingBy = this.team1;
+                this.team1capture += (2.5 * (num * 1));
+                this.team0capture = -this.team1capture;
+            }
+    
+            //base case
+            if(Math.abs(this.team0capture) + Math.abs(this.team1capture) > 200)
+            {
+                this.isCapturing = false;
+                if(this.capturingBy == this.team0)
+                {
+                    this.team0capture = 100;
+                }else{
+                    this.team1capture = -100
+                }
+
+                clearInterval(main);
+            }
+            
+            this.sendCapture = true;
+
+        } , 1000);
+        
+    }
+}
 
 
 Player.list ={};
 Bullet.list ={};
+
+
+//Objective control
+
+const numberOfObj = 3;
+
+const objs = [];
+
+for (let i = 0; i< numberOfObj; i++)
+{
+    objs.push(new Obj(i));
+}
+
+
+
 // This is list all the sockets connected to the server
 const socketList = {};
 
@@ -99,7 +175,42 @@ io.on('connection', (socket) => {
     //checks for the player data coming from 
     socket.on('playerData', (data)=> {
         player.update(data);
+        //console.log(data.obj == null);
     });
+
+    socket.on('changedTeam', (data) => {
+        player.team = data;
+        //console.log(player.team);
+    })
+
+    socket.on('changedObj', (data) => {
+        if(data != -1)
+        {
+            if(player.team == 0)
+            {
+                objs[data].team0++;
+            }else{
+                objs[data].team1++;
+            }
+
+            if(!objs[data].isCapturing)
+                objs[data].capture();
+            
+        }else{
+            if(player.team == 0)
+            {
+                objs[player.obj].team0--;
+            }else{
+                objs[player.obj].team1--;
+            }
+            if(!objs[player.obj].isCapturing)
+                objs[player.obj].capture();
+
+        }
+        player.obj = data;
+        
+    })
+
 
     socket.on('bulletData', (data) => {
         
@@ -122,6 +233,7 @@ io.on('connection', (socket) => {
     })
 
 });
+
 
 //every 40ms the server updates the client of all the players
 setInterval(()=> {
@@ -175,10 +287,37 @@ setInterval(()=> {
         }
 
 
+        const sendObj= [];
+        for(let i = 0; i < objs.length; i++)
+        {
+            if(objs[i].sendCapture)
+            {
+                sendObj.push({
+                    id: objs[i].id,
+                    num0: objs[i].team0capture,
+                    num1: objs[i].team1capture
+                });
+                objs[i].sendCapture = false;
+            }
+        }
+ 
+
+
+
+
         for(let id in socketList){
             socket = socketList[id];
             socket.emit("update", pack);
+            if(sendObj.length > 0)
+            {
+                socket.emit("objectiveUpdate", sendObj);
+                console.log('sending objective');
+            }
+
+            
         }
+
+        
     }, 1000/25
 );
 
