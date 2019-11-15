@@ -31,7 +31,7 @@ class Cell{
     constructor(occupied, id = null){
         this.occupied = occupied;
         this.id = id;
-        this.obj = null;
+        this.obj = -1;
     }
 
 }
@@ -100,7 +100,7 @@ export const updateGridWithPlayer = (player) =>
 };
 
 //get the index of the cell with x and y position
-const getCellNumber = (x, y) =>
+export const getCellNumber = (x, y) =>
 {
     const resY = parseInt(y/cellSize.y) * columns;
     const resX = parseInt(x/cellSize.x);
@@ -150,41 +150,6 @@ export const getCell = (x, y) => {
 } 
 
 
-//objective maping
-
-
-const numOfobjectives = 3;
-
-export const mapTheObjective = (ctx) => {
-
-
-    let y = -(cellSize.y/2)
-
-    for(let i = 0; i < columns; i++)
-    {
-        y +=cellSize.y;
-
-        let x = -(cellSize.x/2)
-
-        for(let j = 0 ; j < rows; j++)
-        {
-            x += cellSize.x;
-            let pixel = ctx.getImageData(x,y,1,1);
-            for(let k = 0; k < numOfobjectives; k ++)
-            {
-                if(pixel.data[0] == k)
-                {
-                    const cell = getCellNumber(x,y);
-                    grid[cell].obj = k;
-                    break;
-                }
-            }
-            
-        }
-        
-        
-    }
-};
 
 
 

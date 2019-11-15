@@ -6,7 +6,9 @@ import * as base from './views/base';
 import {getControl} from './Control';
 import {Bullet} from './model/Bullet';
 import * as mapView from './views/mapView';
+import * as GameController from './GameController';
 import * as CollisionSystem from './CollisionSystem';
+
 
 
 
@@ -24,14 +26,14 @@ const init = () =>
     base.elements.canvasMain.height = mapheight;
     base.elements.canvasMain.width = mapwidth;
     
-
+    
     mapView.drawMap(base.elements.ctxMain);
 
     CollisionSystem.mapTheGrid(base.elements.ctxMain);
 
     mapView.drawMapObj(base.elements.ctxMain);
 
-    CollisionSystem.mapTheObjective(base.elements.ctxMain);
+    GameController.mapTheObjective(base.elements.ctxMain);
 
     mapView.drawMap(base.elements.ctxMain);
 
@@ -86,6 +88,7 @@ const Update = () =>{
     
     if(selfPlayer)
     {
+        GameController.Update();
 
         let reltivitity = getRelativeXY();
         //get the input controls
@@ -101,7 +104,7 @@ const Update = () =>{
 
         
         base.elements.ctxMain.clearRect(0,0,screenWidth,screenHeight);
-        console.log(selfPlayer.obj);
+        //console.log(selfPlayer.obj);
 
         reltivitity = getRelativeXY();
 
@@ -141,7 +144,7 @@ const Update = () =>{
 
 }
 
-setTimeout(init, 100);
+setTimeout(init, 300);
 
 
 
