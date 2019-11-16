@@ -13,8 +13,8 @@ const app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 
 con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
+ if (err) throw err;
+ console.log("Connected!");
 });
 
 app.get('/', function(req,res) {
@@ -22,13 +22,16 @@ app.get('/', function(req,res) {
 });
 
 app.post('/submit',function(req,res){
- var sql = "insert into users values(null,'" + req.body.Username + "','" + req.body.Password +"')";
+ var sql = "insert into users values('" + req.body.id + "','" + req.body.Username + "','" + req.body.Password +"')";
  con.query(sql,function(err){
    if (err) throw err;
    console.log(req.body);
 
  })
 });
+
+//This is the query for the ScoreBoard:
+//var sql = "insert into ScoreBoard values('" + req.body.id + "','" + req.body.Kills + "','" + req.body.Deaths +"','" + req.body.Points +"')";
 
 app.listen('3000',()=>{
  console.log("runnin on port 3000..")
