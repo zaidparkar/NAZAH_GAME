@@ -16,6 +16,11 @@ app.get('/', function (req, res) {
 });
 
 
+let team0points = 0;
+let team1points = 0;
+let isGameFinished = false;
+
+
 //Player class to store movement and angle
 class Entity{
 
@@ -246,9 +251,47 @@ io.on('connection', (socket) => {
 
 });
 
+let updateInterval;
+let emitInterval;
+const gameFinish = () => {
+    //do something
+    isGameFinished = true;
+    clearInterval(updateInterval);
+    clearInterval(emitInterval);
+}
 
-//every 40ms the server updates the client of all the players
-setInterval(()=> {
+
+const updateGameLoop =  () => {
+
+    updateInterval = setInterval(() => {
+        for (let i = 0; i < objs.length; i++)
+        {
+            const obj = objs[i];
+            if(obj.team0capture == 100)
+            {
+                team0points += 1/35;
+
+            }else if(obj.team1.capture == 100 )
+            {
+                team1points += 1/35;
+            }
+        }
+
+        if(team0points >= 1000 || team1points >= 1000)
+        {
+            gameFinish();
+            clearInterval(interval);
+        }
+
+    }, 1000/25)
+    
+}
+
+
+const startEmiting = () => {
+
+    //every 40ms the server updates the client of all the players
+    emitInterval = setInterval(()=> {
         let pack={
             player:[],
             bullet:[]
@@ -341,8 +384,13 @@ setInterval(()=> {
         }
 
         
-    }, 1000/25
-);
+    }, 1000/25);
+}
+
+
+
+startEmiting();
+updateGameLoop();
 
 
 

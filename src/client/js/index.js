@@ -11,8 +11,6 @@ import * as CollisionSystem from './CollisionSystem';
 
 
 
-
-
 const mapwidth = CollisionSystem.mapSize.x;
 const mapheight = CollisionSystem.mapSize.y;
 
