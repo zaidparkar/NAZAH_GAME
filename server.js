@@ -45,7 +45,7 @@ class Player extends Entity{
         Player.list[id] = this;
         this.health = 100;
         this.team = 1;
-        this.obj = null;
+        this.obj = -1;
     }
 }
 
@@ -146,7 +146,7 @@ for (let i = 0; i< numberOfObj; i++)
     objs.push(new Obj(i));
 }
 
-
+const PlayerDied = [];
 
 // This is list all the sockets connected to the server
 const socketList = {};
@@ -159,8 +159,11 @@ io.on('connection', (socket) => {
     socket.emit('init', socket.id);
     //add socket in the list
     socketList[socket.id] = socket;
+    let player;
+    socket.on('spawned', () => {
+        player = new Player(socket.id);
+    });
 
-    let player = new Player(socket.id);
 
     socket.on('disconnect', () =>
     {
@@ -197,19 +200,28 @@ io.on('connection', (socket) => {
                 objs[data].capture();
             
         }else{
-            if(player.team == 0)
+            if(player.obj != -1)
             {
-                objs[player.obj].team0--;
-            }else{
-                objs[player.obj].team1--;
+                if(player.team == 0)
+                {
+                    objs[player.obj].team0--;
+                }else{
+                    objs[player.obj].team1--;
+                }
+                if(!objs[player.obj].isCapturing)
+                    objs[player.obj].capture();
             }
-            if(!objs[player.obj].isCapturing)
-                objs[player.obj].capture();
-
         }
         player.obj = data;
         
-    })
+    });
+
+    socket.on('dead', (id) => {
+        //io.emit('playerDied', id);
+
+        //console.log('Ooooh ooooh pLyaer died yeayreyy');
+        PlayerDied.push(id);
+    });
 
 
     socket.on('bulletData', (data) => {
@@ -313,8 +325,19 @@ setInterval(()=> {
                 socket.emit("objectiveUpdate", sendObj);
                 console.log('sending objective');
             }
+            if(PlayerDied.length > 0)
+            {
+                socket.emit("playerDied", PlayerDied);
+            }
+        }
 
-            
+        if(PlayerDied.length > 0)
+        {
+            for(let i = 0; i < PlayerDied.length; i++)
+            {
+                delete Player.list[PlayerDied[i]];
+            }
+            PlayerDied.splice(0, PlayerDied.length);
         }
 
         

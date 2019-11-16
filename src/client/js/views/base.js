@@ -1,6 +1,7 @@
 export const elements = {
     canvasMain : document.querySelector("#ctx"),
-    ctxMain : document.querySelector("#ctx").getContext("2d")
+    ctxMain : document.querySelector("#ctx").getContext("2d"),
+    spawnBtn : document.querySelector("#spawnButton")
 }
 
 

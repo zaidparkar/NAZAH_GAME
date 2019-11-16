@@ -1,5 +1,6 @@
 import {Entity} from './Entity';
 import { Bullet } from './Bullet';
+import { selfPlayer } from '../connection/Connect';
 
 
 export class Player extends Entity {
@@ -10,6 +11,10 @@ export class Player extends Entity {
     constructor(id, x = 250, y =250){
         super(id, x, y);
         this.health = 100;
+
+        this.spawned = true;
+
+        this.isDead = false;
 
         //team
         this.team = 0;
@@ -58,14 +63,19 @@ export class Player extends Entity {
 
     //updates the movement
     // it recieves the controls key and angle from the mouse movement as the parameters
-    update(movement, angle, click, cells){
 
+    checkHealth(){
         if(this.health <= 0)
         {
             this.die();
         }
+    }
 
+    update(movement, angle, click, cells){
+        //console.log("yare yare daze");
         this.objTimer++;
+
+        this.checkHealth();
 
         //check the cells for collision
         const restrict = this.restriction(cells);
@@ -262,6 +272,9 @@ export class Player extends Entity {
         this.clearGrid();
         this.changedObj = true;
         this.obj = -1;
+        this.isDead = true;
+        delete Player.list[this.id];
+        
     }
 
 
