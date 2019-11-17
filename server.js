@@ -16,6 +16,11 @@ app.get('/', function (req, res) {
 });
 
 
+let team0points = 0;
+let team1points = 0;
+let isGameFinished = false;
+
+
 //Player class to store movement and angle
 class Entity{
 
@@ -45,7 +50,7 @@ class Player extends Entity{
         Player.list[id] = this;
         this.health = 100;
         this.team = 1;
-        this.obj = null;
+        this.obj = -1;
     }
 }
 
@@ -146,7 +151,7 @@ for (let i = 0; i< numberOfObj; i++)
     objs.push(new Obj(i));
 }
 
-
+const PlayerDied = [];
 
 // This is list all the sockets connected to the server
 const socketList = {};
@@ -159,8 +164,11 @@ io.on('connection', (socket) => {
     socket.emit('init', socket.id);
     //add socket in the list
     socketList[socket.id] = socket;
+    let player;
+    socket.on('spawned', () => {
+        player = new Player(socket.id);
+    });
 
-    let player = new Player(socket.id);
 
     socket.on('disconnect', () =>
     {
@@ -197,19 +205,28 @@ io.on('connection', (socket) => {
                 objs[data].capture();
             
         }else{
-            if(player.team == 0)
+            if(player.obj != -1)
             {
-                objs[player.obj].team0--;
-            }else{
-                objs[player.obj].team1--;
+                if(player.team == 0)
+                {
+                    objs[player.obj].team0--;
+                }else{
+                    objs[player.obj].team1--;
+                }
+                if(!objs[player.obj].isCapturing)
+                    objs[player.obj].capture();
             }
-            if(!objs[player.obj].isCapturing)
-                objs[player.obj].capture();
-
         }
         player.obj = data;
         
-    })
+    });
+
+    socket.on('dead', (id) => {
+        //io.emit('playerDied', id);
+
+        //console.log('Ooooh ooooh pLyaer died yeayreyy');
+        PlayerDied.push(id);
+    });
 
 
     socket.on('bulletData', (data) => {
@@ -234,9 +251,47 @@ io.on('connection', (socket) => {
 
 });
 
+let updateInterval;
+let emitInterval;
+const gameFinish = () => {
+    //do something
+    isGameFinished = true;
+    clearInterval(updateInterval);
+    clearInterval(emitInterval);
+}
 
-//every 40ms the server updates the client of all the players
-setInterval(()=> {
+
+const updateGameLoop =  () => {
+
+    updateInterval = setInterval(() => {
+        for (let i = 0; i < objs.length; i++)
+        {
+            const obj = objs[i];
+            if(obj.team0capture == 100)
+            {
+                team0points += 1/35;
+
+            }else if(obj.team1.capture == 100 )
+            {
+                team1points += 1/35;
+            }
+        }
+
+        if(team0points >= 1000 || team1points >= 1000)
+        {
+            gameFinish();
+            clearInterval(interval);
+        }
+
+    }, 1000/25)
+    
+}
+
+
+const startEmiting = () => {
+
+    //every 40ms the server updates the client of all the players
+    emitInterval = setInterval(()=> {
         let pack={
             player:[],
             bullet:[]
@@ -313,13 +368,29 @@ setInterval(()=> {
                 socket.emit("objectiveUpdate", sendObj);
                 console.log('sending objective');
             }
+            if(PlayerDied.length > 0)
+            {
+                socket.emit("playerDied", PlayerDied);
+            }
+        }
 
-            
+        if(PlayerDied.length > 0)
+        {
+            for(let i = 0; i < PlayerDied.length; i++)
+            {
+                delete Player.list[PlayerDied[i]];
+            }
+            PlayerDied.splice(0, PlayerDied.length);
         }
 
         
-    }, 1000/25
-);
+    }, 1000/25);
+}
+
+
+
+startEmiting();
+updateGameLoop();
 
 
 

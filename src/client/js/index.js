@@ -1,14 +1,13 @@
-import { selfPlayer} from './connection/Connect';
+import { selfPlayer, createPlayer, selfId} from './connection/Connect';
 import {Player} from './model/Player';
 import * as playerView from './views/playerView';
 import * as bulletView from './views/bulletView';
 import * as base from './views/base';
-import {getControl} from './Control';
+import {getControl, canSpawn, setSpawn} from './Control';
 import {Bullet} from './model/Bullet';
 import * as mapView from './views/mapView';
 import * as GameController from './GameController';
 import * as CollisionSystem from './CollisionSystem';
-
 
 
 
@@ -17,6 +16,37 @@ const mapheight = CollisionSystem.mapSize.y;
 
 const screenWidth = document.documentElement.clientWidth -20;
 const screenHeight =  document.documentElement.clientHeight- 20;
+
+
+let updateLoop;
+
+
+const spawnInterval = () => {
+    
+    const interval = setInterval( () => {
+        if(canSpawn())
+        {
+            setTimeout(init, 300);
+            clearInterval(interval);
+        }
+
+    },100);
+
+}
+
+
+const startState = () =>
+{
+    base.elements.canvasMain.height = screenHeight;
+    base.elements.canvasMain.width = screenWidth;
+
+    base.elements.ctxMain.clearRect(0,0, screenWidth, screenHeight);
+
+    base.elements.spawnBtn.style.display = 'block';
+
+    spawnInterval();
+}
+
 
 const init = () =>
 {
@@ -40,8 +70,10 @@ const init = () =>
     base.elements.canvasMain.height = screenHeight;
     base.elements.canvasMain.width = screenWidth;
 
+    createPlayer(new Player(selfId));
+
     //runs the interval in 25 fps
-    setInterval(Update , 1000/25);
+    updateLoop = setInterval(Update , 1000/25);
 
 }
 
@@ -88,55 +120,67 @@ const Update = () =>{
     
     if(selfPlayer)
     {
-        GameController.Update();
 
-        let reltivitity = getRelativeXY();
-        //get the input controls
-        const controls = getControl(selfPlayer, reltivitity.x , reltivitity.y);
-
-        //get the surrounding cells
-        const cells = CollisionSystem.getSurroundingCell(selfPlayer);
-
-        // updates movement and the angle
-        selfPlayer.update(controls.movement, controls.angle, controls.click, cells);
+        if(selfPlayer.isDead)
+        {
+            createPlayer(null);
+            startState();
+            setSpawn(false);
+            clearInterval(updateLoop);
 
 
+        }else{
+            
+            GameController.Update();
 
-        
-        base.elements.ctxMain.clearRect(0,0,screenWidth,screenHeight);
-        //console.log(selfPlayer.obj);
-
-        reltivitity = getRelativeXY();
-
-        mapView.drawMap(base.elements.ctxMain, reltivitity.x, reltivitity.y);
-        //grid debug
-        //mapView.drawGrid(base.elements.ctxMain);
-        //mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
-
-        
-        
-        for(const i in Bullet.list){
-            const bullet = Bullet.list[i];
-            //gets the cell to check for collision
-            const cell = CollisionSystem.getCell(bullet.x - selfPlayer.x, bullet.y, selfPlayer.y);
-            //updates the bullet
-            bullet.update(CollisionSystem.getCell);
-            //draws the bullet
-            bulletView.drawBullet(bullet, base.elements.ctxMain, reltivitity.x, reltivitity.y);
+            let reltivitity = getRelativeXY();
+            //get the input controls
+            const controls = getControl(selfPlayer, reltivitity.x , reltivitity.y);
+    
+            //get the surrounding cells
+            const cells = CollisionSystem.getSurroundingCell(selfPlayer);
+    
+            // updates movement and the angle
+            selfPlayer.update(controls.movement, controls.angle, controls.click, cells);
+    
+    
+    
+            
+            base.elements.ctxMain.clearRect(0,0,screenWidth,screenHeight);
+            //console.log(selfPlayer.obj);
+    
+            reltivitity = getRelativeXY();
+    
+            mapView.drawMap(base.elements.ctxMain, reltivitity.x, reltivitity.y);
+            //grid debug
+            //mapView.drawGrid(base.elements.ctxMain);
+            //mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
+    
+            
+            
+            for(const i in Bullet.list){
+                const bullet = Bullet.list[i];
+                //gets the cell to check for collision
+                //const cell = CollisionSystem.getCell(bullet.x - selfPlayer.x, bullet.y, selfPlayer.y);
+                //updates the bullet
+                bullet.update(CollisionSystem.getCell);
+                //draws the bullet
+                bulletView.drawBullet(bullet, base.elements.ctxMain, reltivitity.x, reltivitity.y);
+                
+            }
+            
+            
+    
+            //draws the player in the canvas
+            for(let id in Player.list)
+            {
+                const player = Player.list[id];
+                playerView.drawPlayer(player, base.elements.ctxMain, reltivitity.x, reltivitity.y);   
+                //updates the grid
+                CollisionSystem.updateGridWithPlayer(player);
+            }
             
         }
-        
-        
-
-        //draws the player in the canvas
-        for(let id in Player.list)
-        {
-            const player = Player.list[id];
-            playerView.drawPlayer(player, base.elements.ctxMain, reltivitity.x, reltivitity.y);   
-            //updates the grid
-            CollisionSystem.updateGridWithPlayer(player);
-        }
-        
         
     }
 
@@ -144,7 +188,11 @@ const Update = () =>{
 
 }
 
-setTimeout(init, 300);
+startState();
+
+
+
+    
 
 
 

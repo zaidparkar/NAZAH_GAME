@@ -1,4 +1,6 @@
-import * as base from './views/base'
+import * as base from './views/base';
+import { selfId, createPlayer} from './connection/Connect';
+import { Player } from './model/Player';
 
 
 
@@ -140,5 +142,19 @@ export const getControl = (player ,relativeX = 0, relativeY = 0)  =>{
 }
 
 
+let spawn = false;
 
+export const canSpawn = () => {
+    return spawn;
+} 
+
+export const setSpawn = (value) => {
+    spawn = value;
+}
+
+base.elements.spawnBtn.addEventListener('click',()=>{
+    createPlayer(new Player(selfId));
+    base.elements.spawnBtn.style.display = 'none';
+    spawn = true;
+});
 

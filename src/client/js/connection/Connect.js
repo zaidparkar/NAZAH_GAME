@@ -9,14 +9,17 @@ const socket = io.connect('http://localhost');
 
 
 //self id for the player
-export let selfId;
+export let selfId = 1223;
 //the player of the user
-export let selfPlayer;
+export let selfPlayer = null;
 //variable to sync in with the server
 export let sync = false;
 const syncTime = 4;
 let syncTimer = 0;
 
+export const createPlayer = (player) => {
+    selfPlayer = player;
+}
 
 //-----------------------------------recieve----------------------------
 
@@ -34,7 +37,7 @@ socket.on('connect', (socketId) =>
 //Create player with the socketId
 socket.on('init', (socketId)=>
 {
-    selfPlayer = new Player(socketId);
+    selfId = socketId;
     console.log(socketId);
 });
 
@@ -49,6 +52,20 @@ socket.on('objectiveUpdate', (data) =>{
 
 
 
+socket.on('playerDied', (data) => {
+    console.log('playerDied with the id'  + data);
+    for(let i = 0; i < data.length; i++)
+    {
+        if(Player.list[data[i]] && data[i] != selfId)
+        {
+            Player.list[data[i]].die();
+            delete Player.list[data[i]];
+        }
+    }
+    
+})
+
+
 
 //update the player list
 socket.on('update', (pack) =>
@@ -59,7 +76,6 @@ socket.on('update', (pack) =>
         let data = pack.player[i];
 
         let player;
-
         //check if the player is new or not
         if(Player.list[data.id] != null)
         {
@@ -70,7 +86,7 @@ socket.on('update', (pack) =>
             player = new Player(data.id);
         }
         //update the data of all the player
-        if(player != selfPlayer || !sync)
+        if(player.id != selfId || !sync)
         {
             player.x = data.x;
             player.y = data.y;
@@ -169,30 +185,50 @@ setInterval(()=>{
     if(selfPlayer)
     {
      
-        if(selfPlayer.changedTeam)
+        if(selfPlayer.spawned)
         {
-            socket.emit("changedTeam", selfPlayer.team);
-            //console.log("connect: changedTeam sent");
-
-            selfPlayer.changedTeam = false;
+            socket.emit("spawned", selfId);
+            selfPlayer.spawned = false;
         }
+        else{
 
-        if(selfPlayer.changedObj)
-        {
-            socket.emit("changedObj", selfPlayer.obj);
-            selfPlayer.changedObj = false;
-            selfPlayer.objTimer = 0;
-            console.log("Connect 184 :: yes");
-        }
+            if(selfPlayer.changedTeam)
+            {
+                socket.emit("changedTeam", selfPlayer.team);
+                //console.log("connect: changedTeam sent");
 
-        socket.emit("playerData", {
-            x : selfPlayer.x,
-            y : selfPlayer.y,
-            angle : selfPlayer.angle,
-        });
+                selfPlayer.changedTeam = false;
+            }
 
 
-        socket.emit("bulletData", bulletData);
+
+
+            if(selfPlayer.changedObj)
+            {
+                socket.emit("changedObj", selfPlayer.obj);
+                selfPlayer.changedObj = false;
+                selfPlayer.objTimer = 0;
+                //console.log("Connect 184 :: yes");
+            }
+
+
+
+
+            if(selfPlayer.isDead)
+            {
+                console.log("i died");
+                socket.emit("dead", selfId);
+            }else{
+                socket.emit("playerData", {
+                    x : selfPlayer.x,
+                    y : selfPlayer.y,
+                    angle : selfPlayer.angle,
+                });
+        
+        
+                socket.emit("bulletData", bulletData);
+            }
+        }  
     }
 
     //checks if the game is in sync with the server
@@ -211,5 +247,5 @@ setInterval(()=>{
 
 //only use when testing
 
-selfPlayer = new Player(12223);
+//selfPlayer = new Player(12223);
 
