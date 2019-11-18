@@ -6,11 +6,22 @@ export const elements = {
     lRSignIn : document.querySelector('#LRSignIn'),
     lRRegister : document.querySelector('#LRRegister'),
     choosePage : document.querySelector("#ChooseTeam"),
+    CTeamA: document.querySelector("#CTeamA"),
+    CTeamB: document.querySelector("#CTeamB"),
     loginPage : document.querySelector("#LoginPage"),
+    LSignIn: document.querySelector("#LSignIn"),
+    LBack: document.querySelector("#LBack"),
     mainMenu : document.querySelector("#mainmenu"),
+    mJoinGame : document.querySelector("#MJoinGame"),
+    mOption : document.querySelector("#MOptions"),
     register : document.querySelector("#registration"),
+    RSignIn : document.querySelector("#RSignIn"),
+    RBack : document.querySelector("#RBack"),
     respawnPage : document.querySelector("#Respawn"),
-    mJoinGame : document.querySelector("#MJoinGame")
+    XRespawn : document.querySelector("#XRespawn"),
+    XOption : document.querySelector("#XOption"),
+
+
 
 }
 
