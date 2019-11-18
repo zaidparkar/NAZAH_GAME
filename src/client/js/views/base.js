@@ -19,8 +19,7 @@ export const elements = {
     RBack : document.querySelector("#RBack"),
     respawnPage : document.querySelector("#Respawn"),
     XRespawn : document.querySelector("#XRespawn"),
-    XOption : document.querySelector("#XOption"),
-
+    XOption : document.querySelector("#XOption")
 
 
 }
