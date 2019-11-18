@@ -201,6 +201,85 @@ body {
       float: right;
   }
 
+  .horizontal {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding-left: 20%;
+    padding-top: 1%;
+}
+
+.bar {
+    width: 30%;
+    float: left;
+}
+
+#bar1 {
+    transform: rotate(180deg);
+}
+
+#time {
+    width: 10%;
+}
+
+#team1 {
+    transform: rotate(180deg);
+}
+
+.score {
+    position: absolute;
+    padding: 0 1%;
+    color: white;
+}
+
+#ammo {
+    position: relative;
+    font-size: 34px;
+    padding: 15px;
+    /* color: white; */
+}
+
+#health {
+    position: relative;
+    width: 100%;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 15px;
+}
+
+#first {
+    position: relative;
+}
+
+#second {
+    position: relative;
+}
+
+#third {
+    position: relative;
+}
+
+#fourth {
+    position: relative;
+}
+
+.objective {
+    width: 100%;
+    padding: 15px;
+    float: left;
+    text-align: center;
+}
+
+.ob {
+    display: inline-block;
+    right: 6%;
+    font-size: 20px;
+    padding-left: 100px;
+}
 
   .unGame{
     display: none;

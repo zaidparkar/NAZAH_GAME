@@ -19,9 +19,15 @@ export const elements = {
     RBack : document.querySelector("#RBack"),
     respawnPage : document.querySelector("#Respawn"),
     XRespawn : document.querySelector("#XRespawn"),
-    XOption : document.querySelector("#XOption")
-
-
+    XOption : document.querySelector("#XOption"),
+    Playerui : document.querySelector('#playerui'),
+    Bar1 : document.querySelector('#bar1'),
+    Team1 : document.querySelector('#team1'),
+    Time : document.querySelector('#time'),
+    Bar2 : document.querySelector('#bar2'),
+    Team2 : document.querySelector('#team2'),
+    Ammo : document.querySelector('#ammo'),
+    Health : document.querySelector('#health')
 }
 
 
