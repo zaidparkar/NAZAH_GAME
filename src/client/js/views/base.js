@@ -13,7 +13,7 @@ export const elements = {
     LBack: document.querySelector("#LBack"),
     mainMenu : document.querySelector("#mainmenu"),
     mJoinGame : document.querySelector("#MJoinGame"),
-    mOption : document.querySelector("#MOptions"),
+    mOption : document.querySelector("#MOption"),
     register : document.querySelector("#registration"),
     RSignIn : document.querySelector("#RSignIn"),
     RBack : document.querySelector("#RBack"),
