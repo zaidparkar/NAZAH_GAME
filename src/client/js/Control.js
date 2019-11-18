@@ -174,7 +174,75 @@ base.elements.lRRegister.addEventListener("click", () => {
 });
 
 
-//
+//choose team page
+let CTeamA = false;
+
+export const getCTeamA = () => {
+    return CTeamA;
+} 
+
+export const setCTeamA = (value) => {
+    CTeamA = value;
+}
+
+base.elements.CTeamA.addEventListener("click", () => {
+    CTeamA = true;
+    
+});
+
+
+//team b button
+let CTeamB = false;
+
+export const getCTeamB = () => {
+    return CTeamB;
+} 
+
+export const setCTeamB = (value) => {
+    CTeamB = value;
+}
+
+base.elements.CTeamB.addEventListener("click", () => {
+    CTeamB = true;
+    
+});
+
+
+//login in page
+let Lsignin = false;
+
+export const getLsignin = () => {
+    return Lsignin;
+} 
+
+export const setLsignin = (value) => {
+    Lsignin = value;
+}
+
+base.elements.LSignIn.addEventListener("click", () => {
+    Lsignin = true;
+    
+});
+
+
+//back button
+let LBack = false;
+
+export const getLBack = () => {
+    return LBack;
+} 
+
+export const setLBack = (value) => {
+    LBack = value;
+}
+
+base.elements.LBack.addEventListener("click", () => {
+    LBack = true;
+    
+});
+
+
+//join game button
 let joinGame = false;
 
 export const getJoinGame = () => {
@@ -191,13 +259,89 @@ base.elements.mJoinGame.addEventListener("click", () => {
 });
 
 
+//options button
+let option = false;
+
+export const getoption = () => {
+    return option;
+} 
+
+export const setoption = (value) => {
+    option = value;
+}
+
+base.elements.mOption.addEventListener("click", () => {
+    option = true;
+    
+});
 
 
+//registration page sign in
+let RSignin = false;
+
+export const getRSignin = () => {
+    return RSignin;
+} 
+
+export const setRSignin = (value) => {
+    RSignin = value;
+}
+
+base.elements.RSignIn.addEventListener("click", () => {
+    RSignin = true;
+    
+});
 
 
+//registration page go back button
+let RBack = false;
+
+export const getRBack = () => {
+    return RBack;
+} 
+
+export const setRBack = (value) => {
+    RBack = value;
+}
+
+base.elements.RBack.addEventListener("click", () => {
+    RBack = true;
+    
+});
 
 
+//respawn page button
+let XRespawn = false;
 
+export const getXRespawn = () => {
+    return XRespawn;
+} 
+
+export const setXRespawn = (value) => {
+    XRespawn = value;
+}
+
+base.elements.XRespawn.addEventListener("click", () => {
+    XRespawn = true;
+    
+});
+
+
+//repsawn page options button
+let XOption = false;
+
+export const getXOption = () => {
+    return XOption;
+} 
+
+export const setXOption = (value) => {
+    XOption = value;
+}
+
+base.elements.XOption.addEventListener("click", () => {
+    XOption = true;
+    
+});
 
 
 let spawn = false;
