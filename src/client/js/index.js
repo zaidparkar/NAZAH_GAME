@@ -3,7 +3,7 @@ import {Player} from './model/Player';
 import * as playerView from './views/playerView';
 import * as bulletView from './views/bulletView';
 import * as base from './views/base';
-import {getControl, canSpawn, setSpawn} from './Control';
+import * as Control from './Control';
 import {Bullet} from './model/Bullet';
 import * as mapView from './views/mapView';
 import * as GameController from './GameController';
@@ -24,25 +24,62 @@ let updateLoop;
 const spawnInterval = () => {
     
     const interval = setInterval( () => {
-        if(canSpawn())
+        if(Control.canSpawn())
         {
             setTimeout(init, 300);
             clearInterval(interval);
         }
 
-    },100);
+    },40);
 
+}
+
+const loginRegisterState = () => {
+    //only display the lRpage
+    base.elements.canvasMain.style.display = "none";
+    base.elements.lRPage.style.display = "block";
+
+    //listen for the event listeners
+    const eventInterval = setInterval(() => {
+
+        if(Control.getLRSignIn())
+        {
+            Control.setLRSignIn(false);
+            clearInterval(eventInterval);
+            mainMenuState();
+        }
+    
+    },40);
+}
+
+const mainMenuState = () => {
+    base.elements.mainMenu.style.display = "block";
+    base.elements.lRPage.style.display = "none";
+
+    //listen for the intervals
+    const eventInterval = setInterval(() => {
+        if(Control.getJoinGame())
+        {
+            Control.setJoinGame(false);
+            Control.setSpawn(true);
+            clearInterval(eventInterval);
+            startState();
+        }
+    },40);
 }
 
 
 const startState = () =>
 {
+    base.elements.mainMenu.style.display = "none";
+    base.elements.canvasMain.style.display = "block";
+
     base.elements.canvasMain.height = screenHeight;
     base.elements.canvasMain.width = screenWidth;
 
     base.elements.ctxMain.clearRect(0,0, screenWidth, screenHeight);
 
-    base.elements.spawnBtn.style.display = 'block';
+    //base.elements.spawnBtn.style.display = 'block';
 
     spawnInterval();
 }
@@ -125,7 +162,7 @@ const Update = () =>{
         {
             createPlayer(null);
             startState();
-            setSpawn(false);
+            Control.setSpawn(false);
             clearInterval(updateLoop);
 
 
@@ -135,7 +172,7 @@ const Update = () =>{
 
             let reltivitity = getRelativeXY();
             //get the input controls
-            const controls = getControl(selfPlayer, reltivitity.x , reltivitity.y);
+            const controls = Control.getControl(selfPlayer, reltivitity.x , reltivitity.y);
     
             //get the surrounding cells
             const cells = CollisionSystem.getSurroundingCell(selfPlayer);
@@ -187,8 +224,7 @@ const Update = () =>{
 
 
 }
-
-startState();
+loginRegisterState();
 
 
 
