@@ -141,6 +141,64 @@ export const getControl = (player ,relativeX = 0, relativeY = 0)  =>{
     }
 }
 
+//Login and registration Page event listeners
+
+let lRSignIn = false;
+
+export const getLRSignIn = () => {
+    return lRSignIn;
+} 
+
+export const setLRSignIn = (value) => {
+    lRSignIn = value;
+}
+
+base.elements.lRSignIn.addEventListener("click", () => {
+    lRSignIn = true;
+});
+
+//register button
+
+let lRRegister = false;
+
+export const getLRRegister = () => {
+    return lRRegister;
+} 
+
+export const setLRRegister = (value) => {
+    lRRegister = value;
+}
+
+base.elements.lRRegister.addEventListener("click", () => {
+    lRRegister = true;
+});
+
+
+//
+let joinGame = false;
+
+export const getJoinGame = () => {
+    return joinGame;
+} 
+
+export const setJoinGame = (value) => {
+    joinGame = value;
+}
+
+base.elements.mJoinGame.addEventListener("click", () => {
+    joinGame = true;
+    
+});
+
+
+
+
+
+
+
+
+
+
 
 let spawn = false;
 
@@ -152,9 +210,5 @@ export const setSpawn = (value) => {
     spawn = value;
 }
 
-base.elements.spawnBtn.addEventListener('click',()=>{
-    createPlayer(new Player(selfId));
-    base.elements.spawnBtn.style.display = 'none';
-    spawn = true;
-});
+
 

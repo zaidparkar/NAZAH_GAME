@@ -1,0 +1,207 @@
+/* --------- Front Page ------------- */
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: url(./img/spt/background.png) no-repeat;
+    background-size: cover;
+}
+
+
+.bg-image {
+    background-image: url(./img/spt/background.png);
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(./img/spt/background.png);
+    filter: blur(160px);
+    -webkit-filter: blur(8px);
+  
+    height: 100%;
+  
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+body {
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(./img/spt/background.png); /* This is showing the image on the background of the webpage*/
+    /* The rbga thing (rgba(0,0,0,0.5), rgba(0,0,0,0.5)), , makes the background go dark transparent */
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.logo img{
+    float: left;
+    width: 110px;
+    height: auto;
+    left: 5%;
+    margin-top: 20px;
+    margin-left: 60px;
+    
+}
+
+.login-box{
+    width: 280px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.login-box h1{
+    float: left;
+    font-size: 30px;
+    border-bottom: 5px solid #018f1e;
+    margin-bottom: 10px;
+    padding: 13px 0; 
+}
+
+.textbox{
+    width: 100%;
+    overflow: hidden;
+    font-size: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #018f1e;
+}
+
+.textbox i{
+    width: 26px;
+    float: left;
+    text-align: center;
+}
+
+.textbox input{
+    border: none;
+    outline: none;
+    background: none;
+    color: rgb(254, 254, 254);
+    font-size: 18px;
+    width: 100px;
+    float: left;
+    margin: 0 10px;
+}
+
+.btn {
+    width: 100%;
+    background: none;
+    border:2px solid  #018f1e;
+    color: white;
+    padding: 5px;
+    font-size: 18px ;
+    transition: 0.6s ease;
+    cursor: pointer;
+    margin: 12px 0;
+    
+}
+
+.btn:hover {
+    background-color: #018f1e;
+    color:white;
+}
+ /* -------------------- Choose Team --------------------- */
+
+
+.team2{
+    float: left;
+    width: 150px;
+    height: auto;
+    right: 10%;
+    margin-top: 10px;
+    margin-left: 90px;
+    
+}
+.team1 {
+    float: left;
+    width: 150px;
+    height: auto;
+    /*left: 5%;*/
+    margin-top: 10px;
+    margin-left: 120px;
+    
+}
+
+#CTeamB {
+    top: 10%;
+    margin: 1px 0;
+    
+}
+ 
+ /* -------------------- MainMenu --------------------- */
+
+#MOption {
+    top: 10%;
+    margin: 1px 0;
+    
+}
+
+/* ---------------------- Login Page ------------------- */
+
+#LBack{
+    top: 10%;
+    margin: 1px 0;
+}
+
+/* ----------------------------- Registration Page ---------------- */
+
+#RBack {
+    transition: 0.6s ease;
+    margin: 1px 0;
+    
+}
+
+/* ------------------- Score Board --------------------------- */
+.scoreboard {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    margin-top: 100px;
+    width: 40%;
+    color: white;
+  }
+  
+  .scoreboard td, .scoreboard th {
+    /*border: 1px solid #181818;*/
+    padding: 13px 25px;    
+  }
+
+  .scoreboard tr {
+      padding-left: 11px;
+  }
+
+  td { 
+      padding-left: 10px;
+      text-align: center;
+  }
+  
+  .scbname{ 
+      text-align: left;
+  }
+
+  th {
+      text-align: left;
+  }
+ 
+  .scoreboard tr {background-color: #373535}
+  
+  .scoreboard th {
+    font-weight: 300;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #018f1e;
+    color: white;
+  }
+
+  #scb1 {
+      margin-left: 120px;
+      float: left;
+  }
+
+  #scb2 {
+      margin-right: 120px;
+      float: right;
+  }
+
+
+  .unGame{
+    display: none;
+}

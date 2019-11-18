@@ -1,7 +1,17 @@
 export const elements = {
     canvasMain : document.querySelector("#ctx"),
     ctxMain : document.querySelector("#ctx").getContext("2d"),
-    spawnBtn : document.querySelector("#spawnButton")
+    //LRpage elements
+    lRPage : document.querySelector("#LRPage"),
+    lRSignIn : document.querySelector('#LRSignIn'),
+    lRRegister : document.querySelector('#LRRegister'),
+    choosePage : document.querySelector("#ChooseTeam"),
+    loginPage : document.querySelector("#LoginPage"),
+    mainMenu : document.querySelector("#mainmenu"),
+    register : document.querySelector("#registration"),
+    respawnPage : document.querySelector("#Respawn"),
+    mJoinGame : document.querySelector("#MJoinGame")
+
 }
 
 

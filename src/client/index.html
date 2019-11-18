@@ -4,84 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 <body>
 
-
     <canvas id='ctx' width="500px" height="500px" style='border: 1px solid #000; position: absolute;'></canvas>
-    <button id='spawnButton' width="200px" height= "100px" style='position: absolute;'>Spawn</button>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./js/index.js"></script>
-
-    <!-- <div id = "LRPage">
+    
+    <div class="unGame" id = "LRPage">
         <div class="logo">
-            <img src="../client/img/spt/logo.png" alt="The logo">
+            <img src="./img/spt/logo.png" alt="The logo">
         </div>
         <div class="login-box">
             <h1>Gun Gale Online</h1>
             <input class="btn" id  = "LRSignIn" type="button" name = "" value = "Sign In">
             <input class="btn" id = "LRRegister" type="button" name = "" value = "Register"> 
         </div>
-    </div> -->
-    <!-- <div id = "ChooseTeam">
+    </div>
+    <div class="unGame" id = "ChooseTeam">
         <div class="logo">
-                 <img src="../client/img/spt/logo.png" alt="The logo">
+                 <img src="./img/spt/logo.png" alt="The logo">
         </div>
         <div class="login-box">
              <h1>Choose Team</h1>
              <input class = "btn" id="CTeamA" type="button" name = "" value = "Team A">
-             <img class="team1" src="../client/img/spt/ShooterBlue.gif" alt="The logo">
+             <img class="team1" src="./img/spt/ShooterBlue.gif" alt="The logo">
              <input class = "btn" id = "CTeamB" type="button" name = "" value = "Team B"> 
-             <img class="team2" src="../client/img/spt/ShooterRed.gif" alt="The logo">
+             <img class="team2" src="./img/spt/ShooterRed.gif" alt="The logo">
          </div>
-    </div> -->
-    <!-- <div id="LoginPage">
-            <div class="logo">
-                    <img src="../client/img/spt/logo.png" alt="The logo">
-                </div>
-                <div class="login-box">
-                    <h1>Login</h1>
-                    <div class="textbox">
-                        <input type="Username" placeholder="Username" name="" value="">
-                    </div>
-                    <div class="textbox">
-                        <input type="Password" placeholder="Password" name="" value="">
-                    </div>
-                    <input class="btn" id= "LSignIn" type="button" name = "" value = "Sign In ">
-                    <input class="btn" id = "LBack" type="button" name = "" value = "Back to Main Menu ">
-                    </div>
-                </div>
-    </div> -->
-    <!-- <div id = "mainmenu">
-            <div class="logo">
-                    <img src="../client/img/spt/logo.png" alt="The logo">
-                </div>
-                <div class="login-box">
-                    <h1>Gun Gale Online</h1>
-                    <input class="btn" id = "MJoinGame" type="button" name = "" value = "Join Game">
-                    <input class="btn" id = "MOption" type="button" name = "" value = "Option"> 
-                </div>
-    </div> -->
-    <!-- <div id='registration'>
-            <div class="logo">
-                    <img src="../client/img/spt/logo.png" alt="The logo">
-                </div>
-                <div class="login-box">
-                    <h1>Registration</h1>
-                    <div class="textbox">
-                        <input type="Username" placeholder="Enter Username" name="" value="">
-                    </div>
-                    <div class="textbox">
-                        <input type="Password" placeholder="Enter Password" name="" value="">
-                    </div>
-                    <div class="textbox">
-                        <input type="Password" placeholder="Re-Type Password" name="" value="">
-                    </div>
-                    <input class="btn" id = "RSignIn" type="button" name = "" value = "Sign In ">
-                    <input class="btn" id = "RBack" type="button" name = "" value = "Back to Main Menu">
-                </div>
-    </div> -->
+    </div>
+    <div class="unGame" id="LoginPage">
+        <div class="logo">
+                <img src="./img/spt/logo.png" alt="The logo">
+        </div>
+        <div class="login-box">
+            <h1>Login</h1>
+            <div class="textbox">
+                <input type="Username" placeholder="Username" name="" value="">
+            </div>
+            <div class="textbox">
+                <input type="Password" placeholder="Password" name="" value="">
+            </div>
+            <input class="btn" id= "LSignIn" type="button" name = "" value = "Sign In ">
+            <!--<input class="btn" id = "LBack" type="button" name = "" value = "Back to Main Menu ">-->
+        </div>
+    </div>
+ 
+    <div class="unGame" id = "mainmenu">
+        <div class="logo">
+            <img src="./img/spt/logo.png" alt="The logo">
+        </div>
+        <div class="login-box">
+            <h1>Gun Gale Online</h1>
+            <input class="btn" id = "MJoinGame" type="button" name = "" value = "Join Game">
+            <input class="btn" id = "MOption" type="button" name = "" value = "Option"> 
+        </div>
+    </div>
+    <div class="unGame" id='registration'>
+        <div class="logo">
+            <img src="./img/spt/logo.png" alt="The logo">
+        </div>
+        <div class="login-box">
+            <h1>Registration</h1>
+            <div class="textbox">
+                <input type="Username" placeholder="Enter Username" name="" value="">
+            </div>
+            <div class="textbox">
+                <input type="Password" placeholder="Enter Password" name="" value="">
+            </div>
+            <div class="textbox">
+                <input type="Password" placeholder="Re-Type Password" name="" value="">
+            </div>
+            <input class="btn" id = "RSignIn" type="button" name = "" value = "Sign In ">
+            <input class="btn" id = "RBack" type="button" name = "" value = "Back to Main Menu">
+        </div>
+    </div> 
     <!-- <div id = "Scoreboard">
         <table class="scoreboard" id="scb1">
             <tr>
@@ -220,9 +219,9 @@
             </tr>
         </table>
     </div> -->
-    <!-- <div id = "Respawn">
+    <div class="unGame" id = "Respawn">
         <div class="logo">
-            <img src="logo.png" alt="The logo">
+            <img src="./img/spt/logo.png" alt="The logo">
         </div>
         <div class="login-box">
             <h1>You will respawn after: </h1>
@@ -230,7 +229,6 @@
             <input class="btn" id  = "XRespawn" type="button" name = "" value = "Respawn">
             <input class="btn" id = "XOption" type="button" name = "" value = "Options"> 
         </div>
-    </div> -->
     </div>
     
 </body>
