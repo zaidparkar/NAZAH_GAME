@@ -150,15 +150,55 @@ socket.on('playerDisconnected', (socketId) =>
 });
 
 
+//--------------------------check sign in ----------------------------
+
+let SignedIn = false;
+
+export const checkSignIn = () => {
+    return SignedIn;
+}
+
+socket.on('signInPassed', () =>{
+    console.log("passed");
+    SignedIn = true;
+});
 
 
 //-----------------------------emit-----------------------------------
 
+let emitSignIn = false;
+let userName = "";
+let password = "";
+
+export const setEmitSignIn = (value) => 
+{
+    emitSignIn = value;
+}
+
+export const setSignInDetails = (name, pass) => {
+
+    userName = name;
+    password = pass;
+}
 
 
 //send the player data to the server
 setInterval(()=>{
 
+    //sign in details
+
+    if(emitSignIn){
+        emitSignIn = false;
+        socket.emit("signInDetails", {
+            userName : userName,
+            password: password
+        })
+    }
+
+
+
+
+    // game data
     const bulletData = [];
     
     for (const i in Player.bulletList)

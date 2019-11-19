@@ -36,7 +36,8 @@ var con = mysql.createConnection({
 
 
 con.connect(function(err) {
- if (err) throw err;
+ if (err) 
+    throw err;
  console.log("Connected!");
 });
 
@@ -47,15 +48,15 @@ con.query('UPDATE ScoreBoard SET Kills=Kills+1 where id = '+'"'+id+'"',function(
 }
 
 const getKillsTemp = (id)=>{
-  return new Promise((resolve, reject) => { 
-    con.query('SELECT Kills from ScoreBoard where id='+'"'+id+'"',(err,res)=>{
-    if (err)
-      reject(err);
+    return new Promise((resolve, reject) => { 
+        con.query('SELECT Kills from ScoreBoard where id='+'"'+id+'"',(err,res)=>{
+        if (err)
+            reject(err);
+        if(res[0].Kills)
+            resolve(res[0].Kills);  
 
-    resolve(res[0].Kills);  
-    
-  });
-});
+        });
+    });
 };
 
 const UpdateDeaths = (id) =>{
@@ -66,19 +67,15 @@ const UpdateDeaths = (id) =>{
 
 
  const getDeathsTemp = (id)=>{
-   con.query('SELECT Deaths from ScoreBoard where id='+'"'+id+'"',function(err,res){
-    if (err) throw err;
-    return res;
-  });
-  return new Promise((resolve, reject) => { 
-    con.query('SELECT Deaths from ScoreBoard where id='+'"'+id+'"',(err,res)=>{
-    if (err)
-      reject(err);
-
-    resolve(res[0].Deaths);  
-    
-  });
-});
+    return new Promise((resolve, reject) => { 
+            con.query('SELECT Deaths from ScoreBoard where id='+'"'+id+'"',(err,res)=>{
+            if (err)
+                reject(err);
+            if(res[0].Deaths)
+                resolve(res[0].Deaths);  
+            
+        });
+    });
 };
 
 const UpdateScore = (Score,id) =>{
@@ -112,14 +109,13 @@ const getUsernameTemp = (id)=>{
 
 
 const getPasswordTemp = (id)=>{
-  return new Promise((resolve, reject) => { con.query('SELECT Password from users where id='+'"'+id+'"',(err,res)=>{
-    if (err)
-      reject(err);
-
-    resolve(res[0].Password);  
-    
-  });
-});
+    return new Promise((resolve, reject) => { con.query('SELECT Password from users where id="'+id+'"',(err,res)=>{
+            if (err)
+                reject(err);
+            resolve(res[0].Password);  
+            
+        });
+    });
 };
  const getScore=(id)=>{
   getScoreTemp("aditya").then((res) => {
@@ -145,9 +141,10 @@ const getPasswordTemp = (id)=>{
   });
 };
 
- const getPassword=(id)=>{
-  getPasswordTemp(id).then((res) =>{
-    console.log(res);
+ const getPassword= (id)=>{
+   getPasswordTemp(id).then((res) =>{
+    console.log(res+ " from the get password function");
+    return res;
   });
 };
 
@@ -300,6 +297,32 @@ io.on('connection', (socket) => {
     socket.emit('init', socket.id);
     //add socket in the list
     socketList[socket.id] = socket;
+
+    //sign in details
+
+    socket.on("signInDetails", (data) => {
+        let pass = "";
+        getPasswordTemp(data.userName).then(res => {
+            pass = res;
+            }
+        );
+        
+        setTimeout(() => {
+            if(pass == data.password)
+            {
+                socket.emit("signInPassed");
+                console.log("Passed");
+            }else
+            {
+                console.log("nooooooooo");
+            }
+        }, 500);
+        
+    });
+
+
+
+    //game details
     let player;
     socket.on('spawned', () => {
         player = new Player(socket.id);

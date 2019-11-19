@@ -11,6 +11,8 @@ export const elements = {
     loginPage : document.querySelector("#LoginPage"),
     LSignIn: document.querySelector("#LSignIn"),
     LBack: document.querySelector("#LBack"),
+    loginId: document.querySelector("#loginId"),
+    loginPass: document.querySelector("#loginPass"),
     mainMenu : document.querySelector("#mainmenu"),
     mJoinGame : document.querySelector("#MJoinGame"),
     mOption : document.querySelector("#MOption"),
