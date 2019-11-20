@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+var mysql = require('mysql');
 
 server.listen(80);
 // WARNING: app.listen(80) will NOT work here!
@@ -19,6 +20,146 @@ app.get('/', function (req, res) {
 let team0points = 0;
 let team1points = 0;
 let isGameFinished = false;
+
+//..................database....................//
+
+
+
+
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: '',
+  database: 'players'
+});
+
+
+con.connect(function(err) {
+ if (err) 
+    throw err;
+ console.log("Connected!");
+});
+
+
+const addPlayer=(id, pass) =>{
+    con.query('INSERT INTO users VALUES ("'+id+'","'+pass+'")',function(err){
+            if (err) throw err;
+        });
+}
+
+
+const UpdateKill=(id)=>{
+con.query('UPDATE ScoreBoard SET Kills=Kills+1 where id = '+'"'+id+'"',function(err){
+  if (err) throw err;
+  });
+}
+
+const getKillsTemp = (id)=>{
+    return new Promise((resolve, reject) => { 
+        con.query('SELECT Kills from ScoreBoard where id='+'"'+id+'"',(err,res)=>{
+        if (err)
+            reject(err);
+        if(res[0].Kills)
+            resolve(res[0].Kills);  
+
+        });
+    });
+};
+
+const UpdateDeaths = (id) =>{
+  con.query('UPDATE ScoreBoard SET Deaths=Deaths + 1 where id = '+'"'+id+'"',function(err){
+    if (err) throw err;
+    });
+}
+
+
+ const getDeathsTemp = (id)=>{
+    return new Promise((resolve, reject) => { 
+            con.query('SELECT Deaths from ScoreBoard where id='+'"'+id+'"',(err,res)=>{
+            if (err)
+                reject(err);
+            if(res[0].Deaths)
+                resolve(res[0].Deaths);  
+            
+        });
+    });
+};
+
+const UpdateScore = (Score,id) =>{
+  con.query('UPDATE ScoreBoard SET Points = '+Score+' where id='+'"'+id+'"' ,function(err){
+    if (err) throw err;
+    });
+  }
+
+
+ const getScoreTemp = (id)=>{
+    return new Promise((resolve, reject) => { con.query('SELECT Points from ScoreBoard where id="'+id +'"',(err,res)=>{
+      if (err)
+        reject(err);
+                               
+      resolve(res[0].Points);  
+      
+    });
+  });
+};
+
+const getUsernameTemp = (id)=>{
+  return new Promise((resolve, reject) => { con.query('SELECT "'+id+ '" from users',(err,res)=>{
+    if (err)
+      reject(err);
+
+    resolve(res);  
+    
+  });
+});
+};
+
+
+const getPasswordTemp = (id)=>{
+    return new Promise((resolve, reject) => { con.query('SELECT Password from users where id="'+id+'"',(err,res)=>{
+            if (err)
+                reject(err);
+            resolve(res[0].Password);  
+            
+        });
+    });
+};
+ const getScore=(id)=>{
+  getScoreTemp("aditya").then((res) => {
+    console.log(res);
+  });
+};  
+
+  const getDeaths=(id)=>{
+  getDeathsTemp("aditya").then((res) =>{
+    console.log(res);
+  });
+};
+
+  const getKills=(id)=>{
+  getKillsTemp(id).then((res) =>{
+    console.log(res);
+  });
+};
+
+  const getUsername=(id)=>{
+  getUsernameTemp("adt6").then((res) =>{
+    console.log(res);
+  });
+};
+
+ const getPassword= (id)=>{
+   getPasswordTemp(id).then((res) =>{
+    console.log(res+ " from the get password function");
+    return res;
+  });
+};
+
+
+
+
+  
 
 
 //Player class to store movement and angle
@@ -164,6 +305,47 @@ io.on('connection', (socket) => {
     socket.emit('init', socket.id);
     //add socket in the list
     socketList[socket.id] = socket;
+
+    //sign in details
+
+    socket.on("signInDetails", (data) => {
+        let pass = "";
+        getPasswordTemp(data.userName).then(res => {
+            pass = res;
+            }
+        );
+        
+        setTimeout(() => {
+            if(pass == data.password)
+            {
+                socket.emit("signInPassed");
+                console.log("Passed");
+            }else
+            {
+                console.log("nooooooooo");
+            }
+        }, 500);
+        
+    });
+
+
+    //registrationDetails
+    socket.on("registerDetails", (data) => {
+        try {
+            addPlayer(data.userName, data.password)
+            setTimeout(() => {
+                socket.emit("registerPassed");
+            }, 500);
+        } catch (error) {
+            socket.emit("registerFailed")
+        }
+        
+        
+    });
+
+
+
+    //game details
     let player;
     socket.on('spawned', () => {
         player = new Player(socket.id);

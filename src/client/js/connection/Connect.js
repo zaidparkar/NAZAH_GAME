@@ -150,15 +150,93 @@ socket.on('playerDisconnected', (socketId) =>
 });
 
 
+//--------------------------check sign in ----------------------------
+
+let SignedIn = false;
+
+export const checkSignIn = () => {
+    return SignedIn;
+}
+
+socket.on('signInPassed', () =>{
+    console.log("passed");
+    SignedIn = true;
+});
+
+
+let Registered = false;
+
+export const checkRegester = () => {
+    return Registered;
+}
+
+socket.on('registerPassed', () =>{
+    console.log("passed");
+    Registered = true;
+});
+
+
 
 
 //-----------------------------emit-----------------------------------
+
+let emitSignIn = false;
+let emitRegister = false;
+let userName = "";
+let password = "";
+let email = "";
+
+export const setEmitSignIn = (value) => 
+{
+    emitSignIn = value;
+}
+
+export const setSignInDetails = (name, pass) => {
+
+    userName = name;
+    password = pass;
+}
+
+
+export const setEmitRegister = (value) => 
+{
+    emitRegister = value;
+}
+
+export const setRegisterDetails = (name, pass) => {
+
+    setSignInDetails(name, pass);
+}
+
 
 
 
 //send the player data to the server
 setInterval(()=>{
 
+    //sign in details
+
+    if(emitRegister){
+        emitRegister = false;
+        socket.emit("registerDetails", {
+            userName : userName,
+            password : password
+        })
+    }
+
+
+    if(emitSignIn){
+        emitSignIn = false;
+        socket.emit("signInDetails", {
+            userName : userName,
+            password: password
+        })
+    }
+
+
+
+
+    // game data
     const bulletData = [];
     
     for (const i in Player.bulletList)

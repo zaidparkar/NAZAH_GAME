@@ -1,6 +1,4 @@
 var mysql = require('mysql');
-const express = require('express');
-const bodyParser = require('body-parser');
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -9,35 +7,34 @@ var con = mysql.createConnection({
   database: 'players'
 });
 
-const app = express();
-app.use(bodyParser.urlencoded({extended:false}));
 
 con.connect(function(err) {
  if (err) throw err;
  console.log("Connected!");
 });
 
-app.get('/', function(req,res) {
- res.sendFile('form.html',{root: __dirname })
-});
+const checkLoginTemp = (id) => {
+    return new Promise ((resolve, reject) => {
+        con.query('Select password from users where id = "' + id + '"', function (err, res) {
+            if (err)
+            reject(err);
+      
+            resolve(res[0].Kills);
+        });
+    })
+    
+}
 
-app.post('/submit',function(req,res){
- var sql = "insert into users values('" + req.body.id + "','" + req.body.Username + "','" + req.body.Password +"')";
- con.query(sql,function(err){
-   if (err) throw err;
-   console.log(req.body);
-
- })
-});
-
-app.post('/update',function(req,res){
-  var kill = "UPDATE ScoreBoard SET req.body.Kills=Kills + 1 where req.body.id = id";
-  con.query(kill,function(err){
-    if (err) throw err;
-    console.log(req.body);
-  })
-})
-
+export const checkLogin = async (id, password) => {
+    await checkLoginTemp(id).then((res) => {
+        if(password == res)
+        {
+            return true;
+        }else{
+            return false;
+        }
+    })
+}
 
 const UpdateKill=(id)=>{
 con.query('UPDATE ScoreBoard SET Kills=Kills+1 where id = '+'"'+id+'"',function(err){
