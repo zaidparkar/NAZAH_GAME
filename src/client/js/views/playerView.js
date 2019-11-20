@@ -22,5 +22,5 @@ export const drawPlayer = (player, ctx, x = 0, y = 0) => {
 };
 
 export const updateAmmoUI = player => {
-  base.elements.Ammo = "" + player.ammoInMag + "|" + player.ammo;
+  base.elements.Ammo.textContent = "" + player.ammoInMag + "|" + player.ammo;
 };

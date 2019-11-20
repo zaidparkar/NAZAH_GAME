@@ -38,6 +38,11 @@ const loginRegisterState = () => {
       clearInterval(eventInterval);
       //mainMenuState();
       signInState();
+    }else if(Control.getLRRegister())
+    {
+        Control.setLRRegister(false);
+        clearInterval(eventInterval);
+        registrationState();
     }
   }, 40);
 };
@@ -79,6 +84,44 @@ const checkSignInState = () => {
     },1000)
 }
 
+const registrationState = () => {
+    base.elements.lRPage.style.display = "none";
+    base.elements.register.style.display = "block";
+
+    let userName;
+    let password;
+
+    const eventInterval = setInterval( () => {
+        if(Control.getRSignin())
+        {
+            if(base.elements.registerPass.value == base.elements.registerPass2.value)
+            {
+                userName = base.elements.registerId.value;
+                password = base.elements.registerPass.value;
+                Connect.setEmitRegister(true);
+                Connect.setRegisterDetails(userName, password);
+                Control.setRSignin(false);
+                clearInterval(eventInterval);
+                checkRegisterState();
+            }
+        }
+    },40)
+
+}
+
+const checkRegisterState = () => {
+
+    setTimeout( () =>{
+        let res = Connect.checkRegester();
+        if(res)
+        {
+            base.elements.register.style.display = "none";
+            mainMenuState();
+        }else{
+            registrationState();
+        }
+    },1000)
+}
 
 
 
@@ -239,4 +282,6 @@ const Update = () => {
     }
   }
 };
+
 loginRegisterState();
+//mainMenuState();

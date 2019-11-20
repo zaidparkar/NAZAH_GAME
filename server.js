@@ -41,6 +41,14 @@ con.connect(function(err) {
  console.log("Connected!");
 });
 
+
+const addPlayer=(id, pass) =>{
+    con.query('INSERT INTO users VALUES ("'+id+'","'+pass+'")',function(err){
+            if (err) throw err;
+        });
+}
+
+
 const UpdateKill=(id)=>{
 con.query('UPDATE ScoreBoard SET Kills=Kills+1 where id = '+'"'+id+'"',function(err){
   if (err) throw err;
@@ -317,6 +325,21 @@ io.on('connection', (socket) => {
                 console.log("nooooooooo");
             }
         }, 500);
+        
+    });
+
+
+    //registrationDetails
+    socket.on("registerDetails", (data) => {
+        try {
+            addPlayer(data.userName, data.password)
+            setTimeout(() => {
+                socket.emit("registerPassed");
+            }, 500);
+        } catch (error) {
+            socket.emit("registerFailed")
+        }
+        
         
     });
 

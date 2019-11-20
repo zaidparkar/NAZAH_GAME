@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="wrapper">
 
     <canvas id='ctx' width="500px" height="500px" style='border: 1px solid #000; position: absolute;'></canvas>
     <script src="/socket.io/socket.io.js"></script>
@@ -70,13 +71,13 @@
         <div class="login-box">
             <h1>Registration</h1>
             <div class="textbox">
-                <input type="Username" placeholder="Enter Username" name="" value="">
+                <input id="registerId" type="Username" placeholder="Enter Username" name="" value="">
             </div>
             <div class="textbox">
-                <input type="Password" placeholder="Enter Password" name="" value="">
+                <input id="registerPass" type="Password" placeholder="Enter Password" name="" value="">
             </div>
             <div class="textbox">
-                <input type="Password" placeholder="Re-Type Password" name="" value="">
+                <input id="registerPass2" type="Password" placeholder="Re-Type Password" name="" value="">
             </div>
             <input class="btn" id = "RSignIn" type="button" name = "" value = "Sign In ">
             <input class="btn" id = "RBack" type="button" name = "" value = "Back to Main Menu">
@@ -232,6 +233,7 @@
         </div>
     </div>
     
+
     <div id="playerui" class="unGame">
       <div class="horizontal">
           <div id="bar1" class="w3-border bar">
@@ -258,6 +260,7 @@
               <div class="w3-green" style="height:10px;width:100%"></div>
           </div>
       </div>
+    </div>
   </div>
 </body>
 </html>
