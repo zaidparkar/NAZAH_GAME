@@ -200,8 +200,14 @@ body {
       margin-right: 120px;
       float: right;
   }
-
+/* ------------ Player UI ------------------- */
 
   .unGame{
     display: none;
+}
+
+/* ----------- Objective Bar ----------------- */
+
+#objectivebar{
+    margin-left: 10px;
 }

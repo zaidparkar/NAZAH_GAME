@@ -32,10 +32,6 @@ socket.on('connect', (socketId) =>
 
 });
 
-
-
-
-
 //Create player with the socketId
 socket.on('init', (socketId)=>
 {
@@ -43,7 +39,7 @@ socket.on('init', (socketId)=>
     console.log(socketId);
 });
 
-let isTeamSet = false;
+let isTeamSet = true;
 
 socket.on('teamSet', (data) => {
     team = data;

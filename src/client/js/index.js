@@ -316,5 +316,5 @@ const Update = () => {
   }
 };
 
-loginRegisterState();
-//mainMenuState();
+//loginRegisterState();
+mainMenuState();
