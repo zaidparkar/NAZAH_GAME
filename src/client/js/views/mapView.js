@@ -73,14 +73,15 @@ export const drawGridObj = (ctx ,relx = 0 , rely = 0 ) => {
         
         const cellNumber = i;
         
-        if(grid[i].obj != null)
+        if(grid[i].obj != 255 && grid[i].obj != -1)
         {
             const y = parseInt(cellNumber/columns) * CollisionSystem.cellSize.y;
             const x = (cellNumber % rows) * CollisionSystem.cellSize.x;
     
             ctx.save();
     
-            ctx.fillRect(x + 12.5 + relx, y + 12.5 + rely, 12.5 ,12.5);
+            ctx.fillStyle = 'rgba(255,0,0,0.1)';
+            ctx.fillRect(x + 12.5 + relx, y + 12.5 + rely, 25 ,25);
     
             ctx.restore();
         }

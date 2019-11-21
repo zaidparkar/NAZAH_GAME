@@ -18,12 +18,15 @@ const screenHeight = document.documentElement.clientHeight - 15;
 let updateLoop;
 
 const spawnInterval = () => {
-  const interval = setInterval(() => {
-    if (Control.canSpawn()) {
-      setTimeout(init, 300);
-      clearInterval(interval);
-    }
-  }, 40);
+    const interval = setInterval(() => {
+        if(Connect.getTeamSet())
+            if (Control.canSpawn()) {
+                Control.setSpawn(false);
+                Connect.setTeamSet(false);
+                setTimeout(init, 300);
+                clearInterval(interval);
+            }
+    }, 40);
 };
 
 const loginRegisterState = () => {
@@ -135,13 +138,41 @@ const mainMenuState = () => {
       Control.setJoinGame(false);
       Control.setSpawn(true);
       clearInterval(eventInterval);
+      //chooseTeamState();
       startState();
     }
   }, 40);
 };
 
+
+/*
+const chooseTeamState = () => {
+    base.elements.mainMenu.style.display = "none";
+    base.elements.respawnPage.style.display = "block";
+
+      //listen for the intervals
+  const eventInterval = setInterval(() => {
+    if (Control.getCTeamA() && !Control.canSpawn()) {
+        Control.setCTeamA(false);
+        Control.setSpawn(true);
+        clearInterval(eventInterval);
+        Connect.selfPlayer.team = 0;
+        startState();
+    }else if(Control.getCTeamB() && !Control.canSpawn()){
+        Control.setCTeamB(false);
+        Control.setSpawn(true);
+        clearInterval(eventInterval);
+        Connect.selfPlayer.team = 1;
+        startState();
+    }
+  }, 40);
+
+}*/
+
+
 const startState = () => {
   base.elements.mainMenu.style.display = "none";
+  base.elements.respawnPage.style.display = "none";
   base.elements.canvasMain.style.display = "block";
   base.elements.Playerui.style.display = "block";
 
@@ -149,6 +180,8 @@ const startState = () => {
   base.elements.canvasMain.width = screenWidth;
 
   base.elements.ctxMain.clearRect(0, 0, screenWidth, screenHeight);
+
+  Connect.setEmitTeam(true);
 
   //base.elements.spawnBtn.style.display = 'block';
 
@@ -165,20 +198,20 @@ const init = () => {
   mapView.drawMap(base.elements.ctxMain);
 
   CollisionSystem.mapTheGrid(base.elements.ctxMain);
+    mapView.drawMapObj(base.elements.ctxMain);
 
-  mapView.drawMapObj(base.elements.ctxMain);
+    GameController.mapTheObjective(base.elements.ctxMain);
 
-  GameController.mapTheObjective(base.elements.ctxMain);
+    mapView.drawMap(base.elements.ctxMain);
 
-  mapView.drawMap(base.elements.ctxMain);
+    base.elements.canvasMain.height = screenHeight;
+    base.elements.canvasMain.width = screenWidth;
 
-  base.elements.canvasMain.height = screenHeight;
-  base.elements.canvasMain.width = screenWidth;
+    Connect.createPlayer(new Player(Connect.selfId));
 
-  Connect.createPlayer(new Player(Connect.selfId));
-
-  //runs the interval in 25 fps
-  updateLoop = setInterval(Update, 1000 / 25);
+    //runs the interval in 25 fps
+    updateLoop = setInterval(Update, 1000 / 25);
+  
 };
 
 const getRelativeXY = () => {
@@ -216,7 +249,6 @@ const Update = () => {
     if (Connect.selfPlayer.isDead) {
       Connect.createPlayer(null);
       startState();
-      Control.setSpawn(false);
       clearInterval(updateLoop);
     } else {
       GameController.Update();
@@ -250,7 +282,7 @@ const Update = () => {
       playerView.updateAmmoUI(Connect.selfPlayer);
       //grid debug
       //mapView.drawGrid(base.elements.ctxMain);
-      //mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
+      mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
 
       for (const i in Bullet.list) {
         const bullet = Bullet.list[i];
@@ -283,5 +315,5 @@ const Update = () => {
   }
 };
 
-loginRegisterState();
-//mainMenuState();
+//loginRegisterState();
+mainMenuState();

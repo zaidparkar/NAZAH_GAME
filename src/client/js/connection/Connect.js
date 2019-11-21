@@ -12,6 +12,7 @@ const socket = io.connect('http://localhost');
 export let selfId = 1223;
 //the player of the user
 export let selfPlayer = null;
+let team = 0;
 //variable to sync in with the server
 export let sync = false;
 const syncTime = 4;
@@ -19,6 +20,7 @@ let syncTimer = 0;
 
 export const createPlayer = (player) => {
     selfPlayer = player;
+    selfPlayer.team = team;
 }
 
 //-----------------------------------recieve----------------------------
@@ -40,6 +42,24 @@ socket.on('init', (socketId)=>
     selfId = socketId;
     console.log(socketId);
 });
+
+let isTeamSet = true;
+
+socket.on('teamSet', (data) => {
+    team = data;
+    isTeamSet = true;
+});
+
+export const getTeamSet = ()=>{
+    return isTeamSet;
+}
+
+export const setTeamSet = (value)=>{
+    isTeamSet = value;
+}
+
+
+
 
 socket.on('objectiveUpdate', (data) =>{
     for(let i = 0; i < data.length; i ++)
@@ -84,6 +104,7 @@ socket.on('update', (pack) =>
         }else{
             //console.log("yahoo, new player");
             player = new Player(data.id);
+            player.team = data.team;
         }
         //update the data of all the player
         if(player.id != selfId || !sync)
@@ -208,6 +229,13 @@ export const setRegisterDetails = (name, pass) => {
     setSignInDetails(name, pass);
 }
 
+let emitSettingTeam = false;
+
+export const setEmitTeam = (value) => 
+{
+    emitSettingTeam = value;
+}
+
 
 
 
@@ -231,6 +259,12 @@ setInterval(()=>{
             userName : userName,
             password: password
         })
+    }
+
+    if(emitSettingTeam)
+    {
+        emitSettingTeam = false;
+        socket.emit("setTeam");
     }
 
 
@@ -265,21 +299,10 @@ setInterval(()=>{
      
         if(selfPlayer.spawned)
         {
-            socket.emit("spawned", selfId);
+            socket.emit("spawned", {id: selfId ,team: selfPlayer.team });
             selfPlayer.spawned = false;
         }
         else{
-
-            if(selfPlayer.changedTeam)
-            {
-                socket.emit("changedTeam", selfPlayer.team);
-                //console.log("connect: changedTeam sent");
-
-                selfPlayer.changedTeam = false;
-            }
-
-
-
 
             if(selfPlayer.changedObj)
             {
