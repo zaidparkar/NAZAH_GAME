@@ -1,6 +1,5 @@
 import {Entity} from './Entity';
 import { Bullet } from './Bullet';
-import { selfPlayer } from '../connection/Connect';
 
 
 export class Player extends Entity {
@@ -16,9 +15,14 @@ export class Player extends Entity {
 
         this.isDead = false;
 
+        //animation
+        this.frameHelper1 = 0;
+        this.frameHelper2 = 0;
+        
+
         //team
         this.team = 0;
-        this.changedTeam = true;
+        this.changedTeam = false;
 
         //Gun variables 
 
@@ -212,13 +216,13 @@ export class Player extends Entity {
     {
         let changed = false;
 
-        if(this.preMovement.x = this.x)
+        if(this.preMovement.x != this.x)
         {
             changed = true;
-        }else if (this.preMovement.y = this.y)
+        }else if (this.preMovement.y != this.y)
         {
             changed = true;
-        }else if (this.preMovement.angle = this.angle){
+        }else if (this.preMovement.angle != this.angle){
             changed = true;
         }
         if(changed)
@@ -227,6 +231,7 @@ export class Player extends Entity {
             this.preMovement.y = this.y;
             this.preMovement.angle = this.angle
         }
+        
         return changed;
 
     }

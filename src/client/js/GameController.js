@@ -57,31 +57,30 @@ export const mapTheObjective = (ctx) => {
         objectives.push(new Obj(i));
     }
 
-    let y = -(col.cellSize.y/2)
+    let y = -parseInt(col.cellSize.y/2)
 
     for(let i = 0; i < columns; i++)
     {
         y +=col.cellSize.y;
 
-        let x = -(col.cellSize.x/2)
+        let x = -parseInt(col.cellSize.x/2)
 
         for(let j = 0 ; j < rows; j++)
         {
             x += col.cellSize.x;
             let pixel = ctx.getImageData(x,y,1,1);
-            for(let k = 0; k < numOfobjectives; k ++)
+            const cell = col.getCellNumber(x,y);
+            col.grid[cell].obj = pixel.data[0];
+            if(col.grid[cell].obj != 255)
             {
-                //console.log(pixel.data[0]);
-                if(pixel.data[0] == k)
-                {
-                    const cell = col.getCellNumber(x,y);
-                    col.grid[cell].obj = k;
-                    break;
-                }
+                objectives.push(cell);
             }
+
             
         }
         
         
     }
+
+    console.log(col.grid);
 };

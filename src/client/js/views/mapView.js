@@ -1,5 +1,6 @@
 import * as base from './base';
 import * as CollisionSystem from '../CollisionSystem';
+import { objectives } from '../GameController';
 
 export const mapImg = base.getImage(base.pathStrings.map, CollisionSystem.mapSize.x, CollisionSystem.mapSize.y);
 export const mapObjImg = base.getImage(base.pathStrings.mapObj, CollisionSystem.mapSize.x, CollisionSystem.mapSize.y);
@@ -64,7 +65,7 @@ export const drawGrid = (ctx) =>{
 
 export const drawGridObj = (ctx ,relx = 0 , rely = 0 ) => {
 
-    const columns = CollisionSystem.mapSize.x/ CollisionSystem.cellSize.x ;
+    /*const columns = CollisionSystem.mapSize.x/ CollisionSystem.cellSize.x ;
     const rows =  CollisionSystem.mapSize.y/ CollisionSystem.cellSize.y ;
 
     const grid = CollisionSystem.grid;
@@ -73,19 +74,33 @@ export const drawGridObj = (ctx ,relx = 0 , rely = 0 ) => {
         
         const cellNumber = i;
         
-        if(grid[i].obj != null)
+        if(grid[i].obj != 255 && grid[i].obj != -1)
         {
             const y = parseInt(cellNumber/columns) * CollisionSystem.cellSize.y;
             const x = (cellNumber % rows) * CollisionSystem.cellSize.x;
     
             ctx.save();
     
-            ctx.fillRect(x + 12.5 + relx, y + 12.5 + rely, 12.5 ,12.5);
+            ctx.fillStyle = 'rgba(255,0,0,0.1)';
+            ctx.fillRect(x + 12.5 + relx, y + 12.5 + rely, 25 ,25);
     
             ctx.restore();
         }
 
         
+    }*/
+
+    const columns = CollisionSystem.mapSize.x/ CollisionSystem.cellSize.x ;
+    const rows =  CollisionSystem.mapSize.y/ CollisionSystem.cellSize.y ;
+
+    for(let i = 0; i < objectives.length; i++)
+    {
+        let cellNumber = objectives[i];
+        const y = parseInt(cellNumber/columns) * CollisionSystem.cellSize.y;
+        const x = (cellNumber % rows) * CollisionSystem.cellSize.x;
+
+        ctx.fillStyle = 'rgba(255,0,0,0.1)';
+        ctx.fillRect(x + 12.5 + relx, y + 12.5 + rely, 25 ,25);
     }
 
 }

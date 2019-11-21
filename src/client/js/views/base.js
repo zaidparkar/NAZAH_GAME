@@ -43,7 +43,9 @@ export const elements = {
 export const pathStrings = {
     trial: './img/spt/sp.png',
     map: './img/spt/Map.png',
-    mapObj:'./img/spt/MapObj.png'
+    mapObj:'./img/spt/MapObj.png',
+    redPlayer: './img/spt/Shooter Red.png',
+    bluePlayer: './img/spt/Shooter Blue.png'
 }
 
 

@@ -211,7 +211,8 @@ class Bullet extends Entity{
         this.hitId = data.hitId;
         if(this.hitId != null)
         {
-            Player.list[this.hitId].health -=25;
+            if(Player.list[this.hitId].team != Player.list[this.playerId].team)
+                Player.list[this.hitId].health -=25;
         }
     }
 }
@@ -305,6 +306,7 @@ io.on('connection', (socket) => {
     socket.emit('init', socket.id);
     //add socket in the list
     socketList[socket.id] = socket;
+    let team = 0;
 
     //sign in details
 
@@ -347,8 +349,37 @@ io.on('connection', (socket) => {
 
     //game details
     let player;
-    socket.on('spawned', () => {
+
+    socket.on('setTeam', () => {
+        let team0 = 0;
+        let team1 = 0;
+        for(let id in Player.list){
+
+            each = Player.list[id];
+            if(each.team == 0)
+            {
+                team0++;
+            }else{
+                team1++;
+            }
+        }
+        console.log(team0);
+        console.log(team1);
+
+        if(team0 <= team1)
+        {
+            team = 0;
+        }else{
+            team = 1;
+        }
+
+        socket.emit('teamSet', team);
+
+    })
+    socket.on('spawned', (data) => {
         player = new Player(socket.id);
+        player.team = team;
+        console.log(player.team);
     });
 
 
@@ -368,13 +399,8 @@ io.on('connection', (socket) => {
         //console.log(data.obj == null);
     });
 
-    socket.on('changedTeam', (data) => {
-        player.team = data;
-        //console.log(player.team);
-    })
-
     socket.on('changedObj', (data) => {
-        if(data != -1)
+        if(data != -1 && data != 255)
         {
             if(player.team == 0)
             {
@@ -488,7 +514,8 @@ const startEmiting = () => {
                     x: player.x,
                     y: player.y,
                     angle: player.angle,
-                    health: player.health
+                    health: player.health,
+                    team: player.team
                 });
                 player.isUpdated = false;
             }
