@@ -71,6 +71,10 @@ export const mapTheObjective = (ctx) => {
             let pixel = ctx.getImageData(x,y,1,1);
             const cell = col.getCellNumber(x,y);
             col.grid[cell].obj = pixel.data[0];
+            if(col.grid[cell].obj != 255)
+            {
+                objectives.push(cell);
+            }
 
             
         }
