@@ -51,3 +51,7 @@ export const drawPlayer = (player, ctx, x = 0, y = 0,) => {
 export const updateAmmoUI = player => {
   base.elements.Ammo.textContent = "" + player.ammoInMag + "|" + player.ammo;
 };
+
+export const updateHealth = player => {
+    base.elements.Health.children[0].getElementsByClassName.width = ""+player.health+"%"
+}

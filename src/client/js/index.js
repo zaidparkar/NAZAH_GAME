@@ -280,6 +280,7 @@ const Update = () => {
       mapView.drawMap(base.elements.ctxMain, reltivitity.x, reltivitity.y);
 
       playerView.updateAmmoUI(Connect.selfPlayer);
+      playerView.updateHealth(Connect.selfPlayer);
       //grid debug
       //mapView.drawGrid(base.elements.ctxMain);
       mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
@@ -315,5 +316,5 @@ const Update = () => {
   }
 };
 
-//loginRegisterState();
-mainMenuState();
+loginRegisterState();
+//mainMenuState();

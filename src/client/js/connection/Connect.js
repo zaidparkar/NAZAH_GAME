@@ -43,7 +43,7 @@ socket.on('init', (socketId)=>
     console.log(socketId);
 });
 
-let isTeamSet = true;
+let isTeamSet = false;
 
 socket.on('teamSet', (data) => {
     team = data;

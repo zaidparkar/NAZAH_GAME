@@ -1,6 +1,5 @@
 import {Entity} from './Entity';
 import { Bullet } from './Bullet';
-import { selfPlayer } from '../connection/Connect';
 
 
 export class Player extends Entity {

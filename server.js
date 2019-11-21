@@ -400,7 +400,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('changedObj', (data) => {
-        if(data != -1)
+        if(data != -1 && data != 255)
         {
             if(player.team == 0)
             {
