@@ -7,6 +7,7 @@ import {Obj} from './model/Obj';
 const numOfobjectives = 3;
 
 export const objectives = [];
+export const objs = [];
 
 let team0points = 0;
 let team1points = 0
@@ -15,16 +16,7 @@ let team1points = 0
 
 export const Update = () =>{
 
-    for (let i = 0; i< numOfobjectives; i++)
-    {
-        if(objectives[i].team0points == 100)
-        {
-            team0points += 1/35;
-        }else if(objectives[i].team1points == 100 )
-        {
-            team1points += 1/35;
-        }
-    }
+    console.log("team0points: " + team0points);
 
     if(team0points >= 1000 || team1points >= 1000)
     {
@@ -37,6 +29,18 @@ const win = () =>
 {
     
 }
+
+export const setTeam0Points = (value) => {
+    team0points = value;
+}
+
+export const setTeam1Points = (value) => {
+    team1points = value;
+}
+
+
+
+
 
 export const getTeam0Points = () =>{
     return team0points;
@@ -54,7 +58,7 @@ export const mapTheObjective = (ctx) => {
 
     for (let i = 0; i < numOfobjectives; i ++)
     {
-        objectives.push(new Obj(i));
+        objs.push(new Obj(i));
     }
 
     let y = -parseInt(col.cellSize.y/2)

@@ -53,5 +53,16 @@ export const updateAmmoUI = player => {
 };
 
 export const updateHealth = player => {
-    base.elements.Health.children[0].getElementsByClassName.width = ""+player.health+"%"
+    base.elements.Health.children[0].style.width = ""+player.health+"%"
+}
+
+export const updateScore = (team0, team1) => {
+    team1 = parseInt(team1)
+    base.elements.Bar1.children[0].textContent = team1;
+    base.elements.Bar1.children[1].style.width = "" + team1/10+ "%";
+
+    team0 = parseInt(team0)
+    base.elements.Bar2.children[0].textContent = team0;
+    base.elements.Bar2.children[1].style.width = "" + team0/10+ "%";
+    
 }

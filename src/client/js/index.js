@@ -169,6 +169,26 @@ const chooseTeamState = () => {
 
 }*/
 
+const respawnState = () =>{
+    base.elements.canvasMain.style.display = "none";
+    base.elements.Playerui.style.display = "none";
+    base.elements.respawnPage.style.display = "block";
+
+    const eventInterval = setInterval(() => {
+
+        if(Control.getXRespawn())
+        {
+            clearInterval(eventInterval);
+            Control.setXRespawn(false);
+            Control.setSpawn(true);
+            startState();
+        }
+        
+
+    }, 40);
+
+}
+
 
 const startState = () => {
   base.elements.mainMenu.style.display = "none";
@@ -192,12 +212,12 @@ const init = () => {
   //base.elements.ctxMain.clearRect(0,0,500,500);
   //draw the map
 
-  base.elements.canvasMain.height = mapheight;
-  base.elements.canvasMain.width = mapwidth;
+    base.elements.canvasMain.height = mapheight;
+    base.elements.canvasMain.width = mapwidth;
 
-  mapView.drawMap(base.elements.ctxMain);
+    mapView.drawMap(base.elements.ctxMain);
 
-  CollisionSystem.mapTheGrid(base.elements.ctxMain);
+    CollisionSystem.mapTheGrid(base.elements.ctxMain);
     mapView.drawMapObj(base.elements.ctxMain);
 
     GameController.mapTheObjective(base.elements.ctxMain);
@@ -248,10 +268,13 @@ const Update = () => {
   if (Connect.selfPlayer) {
     if (Connect.selfPlayer.isDead) {
       Connect.createPlayer(null);
-      startState();
+      //startState();
+      respawnState();
       clearInterval(updateLoop);
     } else {
       GameController.Update();
+
+      console.log(GameController.objs[0].team0capture);
 
       let reltivitity = getRelativeXY();
       //get the input controls
@@ -281,6 +304,7 @@ const Update = () => {
 
       playerView.updateAmmoUI(Connect.selfPlayer);
       playerView.updateHealth(Connect.selfPlayer);
+      playerView.updateScore(GameController.getTeam0Points(), GameController.getTeam1Points());
       //grid debug
       //mapView.drawGrid(base.elements.ctxMain);
       mapView.drawGridObj(base.elements.ctxMain, reltivitity.x, reltivitity.y);
