@@ -275,8 +275,11 @@ export class Player extends Entity {
     die()
     {
         this.clearGrid();
-        this.changedObj = true;
-        this.obj = -1;
+        if(this.obj != -1 && this.obj != 255)
+        {
+            this.changedObj = true;
+            this.obj = -1;
+        }
         this.isDead = true;
         delete Player.list[this.id];
         

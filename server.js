@@ -433,6 +433,12 @@ io.on('connection', (socket) => {
         //io.emit('playerDied', id);
 
         //console.log('Ooooh ooooh pLyaer died yeayreyy');
+        if(Player.list[id].team == 0)
+        {
+            team1points++;
+        }else {
+            team0points++;
+        }
         PlayerDied.push(id);
     });
 
@@ -479,11 +485,13 @@ const updateGameLoop =  () => {
             {
                 team0points += 1/35;
 
-            }else if(obj.team1.capture == 100 )
+            }else if(obj.team1capture == 100 )
             {
                 team1points += 1/35;
             }
         }
+        team0points += 1/35;
+        team1points += 1/35;
 
         if(team0points >= 1000 || team1points >= 1000)
         {
@@ -502,7 +510,9 @@ const startEmiting = () => {
     emitInterval = setInterval(()=> {
         let pack={
             player:[],
-            bullet:[]
+            bullet:[],
+            obj:[],
+            teamPoints:[]
         };
         for(let id in Player.list){
             const player = Player.list[id];
@@ -549,6 +559,19 @@ const startEmiting = () => {
                 }
             }
         }
+        for(let i = 0; i < objs.length; i++)
+        {
+            pack.obj.push(
+                {
+                    id: objs[i].id,
+                    cap0: objs[i].team0capture,
+                    cap1: objs[i].team1capture
+                }
+            );
+        }
+        pack.teamPoints.push(team0points);
+        pack.teamPoints.push(team1points);
+
 
 
         const sendObj= [];
@@ -572,11 +595,11 @@ const startEmiting = () => {
         for(let id in socketList){
             socket = socketList[id];
             socket.emit("update", pack);
-            if(sendObj.length > 0)
+            /*if(sendObj.length > 0)
             {
                 socket.emit("objectiveUpdate", sendObj);
                 console.log('sending objective');
-            }
+            }*/
             if(PlayerDied.length > 0)
             {
                 socket.emit("playerDied", PlayerDied);
