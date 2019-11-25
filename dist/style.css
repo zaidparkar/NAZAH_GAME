@@ -329,6 +329,7 @@ th {
 }
 
 #objectivebar {
+  display: none;  
   width: 100%;
   height: auto;
   text-align: center;
@@ -337,3 +338,12 @@ th {
   margin-left: 95px;
 }
 
+.time {
+    position: absolute;
+    margin-left: 33%;
+}
+
+.time h1{
+    position: center;
+    color: white;
+}

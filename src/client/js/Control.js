@@ -344,6 +344,39 @@ base.elements.XOption.addEventListener("click", () => {
 });
 
 
+
+let ymainBack = false;
+
+export const getYMainBack = () => {
+    return ymainBack;
+} 
+
+export const setYMainBack = (value) => {
+    ymainBack = value;
+}
+
+base.elements.ymainback.addEventListener("click", () => {
+    ymainBack = true;
+});
+
+
+//repsawn page options button
+let XScore = false;
+
+export const getXScore = () => {
+    return XScore;
+} 
+
+export const setXScore = (value) => {
+    XScore = value;
+}
+
+base.elements.Xscore.addEventListener("click", () => {
+    XScore = true;
+    
+});
+
+
 let spawn = false;
 
 export const canSpawn = () => {

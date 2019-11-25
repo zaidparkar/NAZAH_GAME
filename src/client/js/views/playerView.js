@@ -66,3 +66,52 @@ export const updateScore = (team0, team1) => {
     base.elements.Bar2.children[1].style.width = "" + team0/10+ "%";
     
 }
+
+export const updateObjScore = (obj = null, num= null) =>{
+    if(obj != null)
+    {
+
+        const ele = base.elements.objectiveLetter.children;
+
+        for(let i = 0; i < ele.length; i++)
+        {
+            ele[i].style.display = 'none';
+        }
+
+        base.elements.objectiveLetter.children[num].style.display = 'block';
+        base.elements.objBar.style.display = 'block';
+
+        if(obj.team0capture > obj.team1capture)
+        {
+            base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.style.width = ''+obj.team0capture+'%';
+            if(base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.contains('w3-white'))
+                base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.remove('w3-white');
+            if(base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.contains('w3-red'))
+                base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.remove('w3-red');
+            if(!base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.contains('w3-blue'))
+                base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.add('w3-blue');  
+                
+        }else{
+            base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.style.width = ''+obj.team1capture+'%';
+            if(base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.contains('w3-white'))
+                base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.remove('w3-white');
+            if(base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.contains('w3-blue'))
+                base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.remove('w3-blue');
+            if(!base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.contains('w3-red'))
+                base.elements.objBar.firstElementChild.firstElementChild.firstElementChild.classList.add('w3-red');  
+        }
+
+        
+
+    }
+    else
+    {
+        
+        const ele = base.elements.objectiveLetter.children;
+
+        for(let i = 0; i < ele.length; i++)
+        {
+            ele[i].style.display = 'block';
+        }
+    }
+}

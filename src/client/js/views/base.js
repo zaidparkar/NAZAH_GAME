@@ -25,6 +25,7 @@ export const elements = {
     respawnPage : document.querySelector("#Respawn"),
     XRespawn : document.querySelector("#XRespawn"),
     XOption : document.querySelector("#XOption"),
+    Xscore : document.querySelector("#XScoreboard"),
     Playerui : document.querySelector('#playerui'),
     Bar1 : document.querySelector('#bar1'),
     Team1 : document.querySelector('#team1'),
@@ -32,7 +33,14 @@ export const elements = {
     Bar2 : document.querySelector('#bar2'),
     Team2 : document.querySelector('#team2'),
     Ammo : document.querySelector('#ammo'),
-    Health : document.querySelector('#health')
+    Health : document.querySelector('#health'),
+    objectiveLetter : document.querySelector('#objectiveLetter'),
+    objBar : document.querySelector('#objectivebar'),
+    scoreboardPage : document.querySelector('#Scoreboard'),
+    scb1 : document.querySelector('#scb1'),
+    scb2 : document.querySelector('#scb2'),
+    timer: document.querySelector('#timeAfterFinish'),
+    ymainback : document.querySelector('#YMainMenu')
 }
 
 
