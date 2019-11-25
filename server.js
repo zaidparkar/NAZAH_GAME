@@ -17,8 +17,8 @@ app.get('/', function (req, res) {
 });
 
 
-let team0points = 960;
-let team1points = 960;
+let team0points = 0;
+let team1points = 0;
 let isGameFinished = false;
 
 //..................database....................//
@@ -28,10 +28,10 @@ let isGameFinished = false;
 
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: '',
-  database: 'players'
+  host: "sql12.freemysqlhosting.net	",
+  user: "sql12313385",
+  password: 'fsJjcBLylY',
+  database: 'sql12313385'
 });
 
 
