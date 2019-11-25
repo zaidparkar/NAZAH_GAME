@@ -9,6 +9,8 @@ const socket = io.connect('http://localhost');
 
 
 //self id for the player
+export let isGameRunning = true;
+export let isGameFull = false;
 export let selfId = 1223;
 //the player of the user
 export let selfPlayer = null;
@@ -18,9 +20,12 @@ export let sync = false;
 const syncTime = 4;
 let syncTimer = 0;
 
+
+
 export const createPlayer = (player) => {
     selfPlayer = player;
-    selfPlayer.team = team;
+    if(selfPlayer)
+        selfPlayer.team = team;
 }
 
 //-----------------------------------recieve----------------------------
@@ -66,7 +71,18 @@ socket.on('objectiveUpdate', (data) =>{
     }
 })
 
+socket.on('Scoreboard', (data) => {
+    GameController.setDatabase(data);
+});
 
+socket.on('gameFinished', () => {
+    isGameRunning = false;
+});
+
+
+socket.on("NopeJoin", () => {
+    isGameFull = true;
+});
 
 socket.on('playerDied', (data) => {
     console.log('playerDied with the id'  + data);
@@ -86,7 +102,7 @@ socket.on('playerDied', (data) => {
 //update the player list
 socket.on('update', (pack) =>
 {
-
+    isGameRunning = true;
     for(const i in pack.player){
         //get data on one user
         let data = pack.player[i];
@@ -251,103 +267,106 @@ export const setEmitTeam = (value) =>
 setInterval(()=>{
 
     //sign in details
-
-    if(emitRegister){
-        emitRegister = false;
-        socket.emit("registerDetails", {
-            userName : userName,
-            password : password
-        })
-    }
-
-
-    if(emitSignIn){
-        emitSignIn = false;
-        socket.emit("signInDetails", {
-            userName : userName,
-            password: password
-        })
-    }
-
-    if(emitSettingTeam)
+    if(isGameRunning)
     {
-        emitSettingTeam = false;
-        socket.emit("setTeam");
-    }
 
-
-
-
-    // game data
-    const bulletData = [];
-    
-    for (const i in Player.bulletList)
-    {
-        const bullet = Player.bulletList[i];
-
-        //add the required data into the list
-        bulletData.push({
-            id: bullet.id,
-            x: bullet.x,
-            y: bullet.y,
-            angle: bullet.angle,
-            destroyed: bullet.destroyed,
-            hitId: bullet.hitId
-        });
-
-        if(bullet.destroyed){
-            delete Player.bulletList[i];
+        if(emitRegister){
+            emitRegister = false;
+            socket.emit("registerDetails", {
+                userName : userName,
+                password : password
+            })
         }
-    }
 
-    //if the player is available then send the data
-    //emits bulletData
-    if(selfPlayer)
-    {
-     
-        if(selfPlayer.spawned)
-        {
-            socket.emit("spawned", {id: selfId ,team: selfPlayer.team });
-            selfPlayer.spawned = false;
+
+        if(emitSignIn){
+            emitSignIn = false;
+            socket.emit("signInDetails", {
+                userName : userName,
+                password: password
+            })
         }
-        else{
 
-            if(selfPlayer.changedObj)
-            {
-                socket.emit("changedObj", selfPlayer.obj);
-                selfPlayer.changedObj = false;
-                selfPlayer.objTimer = 0;
-                //console.log("Connect 184 :: yes");
-            }
-
-
-
-
-            if(selfPlayer.isDead)
-            {
-                console.log("i died");
-                socket.emit("dead", selfId);
-            }else{
-                socket.emit("playerData", {
-                    x : selfPlayer.x,
-                    y : selfPlayer.y,
-                    angle : selfPlayer.angle,
-                });
-        
-        
-                socket.emit("bulletData", bulletData);
-            }
-        }  
-    }
-
-    //checks if the game is in sync with the server
-    if(sync)
-    {
-        syncTimer++;
-        if(syncTimer > syncTime)
+        if(emitSettingTeam)
         {
-            sync = false;
-            syncTimer = 0;
+            emitSettingTeam = false;
+            socket.emit("setTeam");
+        }
+
+
+
+
+        // game data
+        const bulletData = [];
+        
+        for (const i in Player.bulletList)
+        {
+            const bullet = Player.bulletList[i];
+
+            //add the required data into the list
+            bulletData.push({
+                id: bullet.id,
+                x: bullet.x,
+                y: bullet.y,
+                angle: bullet.angle,
+                destroyed: bullet.destroyed,
+                hitId: bullet.hitId
+            });
+
+            if(bullet.destroyed){
+                delete Player.bulletList[i];
+            }
+        }
+
+        //if the player is available then send the data
+        //emits bulletData
+        if(selfPlayer)
+        {
+        
+            if(selfPlayer.spawned)
+            {
+                socket.emit("spawned", {id: selfId ,team: selfPlayer.team });
+                selfPlayer.spawned = false;
+            }
+            else{
+
+                if(selfPlayer.changedObj)
+                {
+                    socket.emit("changedObj", selfPlayer.obj);
+                    selfPlayer.changedObj = false;
+                    selfPlayer.objTimer = 0;
+                    //console.log("Connect 184 :: yes");
+                }
+
+
+
+
+                if(selfPlayer.isDead)
+                {
+                    console.log("i died");
+                    socket.emit("dead", selfId);
+                }else{
+                    socket.emit("playerData", {
+                        x : selfPlayer.x,
+                        y : selfPlayer.y,
+                        angle : selfPlayer.angle,
+                    });
+            
+            
+                    socket.emit("bulletData", bulletData);
+                }
+            }  
+        }
+
+        //checks if the game is in sync with the server
+        if(sync)
+        {
+            syncTimer++;
+            if(syncTimer > syncTime)
+            {
+                sync = false;
+                syncTimer = 0;
+            }
         }
     }
 

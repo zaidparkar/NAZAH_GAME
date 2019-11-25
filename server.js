@@ -41,6 +41,32 @@ con.connect(function(err) {
  console.log("Connected!");
 });
 
+const getScoreBoard = () => {
+
+    return new Promise((resolve, reject) => {     
+        con.query('SELECT * FROM ScoreBoard', (err, res) =>{
+            if (err)
+                reject(err);
+            if(res)
+                resolve(res);
+        });
+        
+    });
+}
+
+const addScoreboardPlayer = (userName)=> {
+    con.query('INSERT INTO ScoreBoard VALUES ("'+userName+'",0,0,0)', function(err){
+        if(err)
+            throw err;
+    })
+};
+
+const deleteScoreboardPlayer = (userName) => {
+    con.query('DELETE FROM ScoreBoard WHERE id= "'+userName+'"',function(err){
+        if(err)
+            throw err;
+    })
+};
 
 const addPlayer=(id, pass) =>{
     con.query('INSERT INTO users VALUES ("'+id+'","'+pass+'")',function(err){
@@ -54,6 +80,12 @@ con.query('UPDATE ScoreBoard SET Kills=Kills+1 where id = '+'"'+id+'"',function(
   if (err) throw err;
   });
 }
+
+const ClearKills=()=>{
+    con.query('UPDATE ScoreBoard SET Kills=0',function(err){
+      if (err) throw err;
+      });
+    }
 
 const getKillsTemp = (id)=>{
     return new Promise((resolve, reject) => { 
@@ -72,6 +104,12 @@ const UpdateDeaths = (id) =>{
     if (err) throw err;
     });
 }
+
+const ClearDeaths = () =>{
+    con.query('UPDATE ScoreBoard SET Deaths=0',function(err){
+      if (err) throw err;
+      });
+  }
 
 
  const getDeathsTemp = (id)=>{
@@ -203,6 +241,7 @@ class Bullet extends Entity{
         super(id);
         this.playerId = playerId;
         Bullet.list[this.id] = this;
+        this.killed = false;
     }
 
     update(data){
@@ -213,6 +252,9 @@ class Bullet extends Entity{
         {
             if(Player.list[this.hitId].team != Player.list[this.playerId].team)
                 Player.list[this.hitId].health -=25;
+            if(Player.list[this.hitId].health <= 0){
+                this.killed = true;
+            } 
         }
     }
 }
@@ -235,6 +277,7 @@ class Obj{
     capture()
     {
         this.isCapturing = true;
+        
         // runs every second
         const main = setInterval( () =>{
             let num = Math.abs(this.team0 - this.team1);
@@ -242,18 +285,19 @@ class Obj{
             {
                 num = 6;
             }
+            let costValue = (2.5 * (num * 1));
     
     
             if(this.team0 > this.team1)
             {
                 this.capturingBy = this.team0;
-                this.team0capture += (2.5 * (num * 1));
-                this.team1capture = -this.team0capture;
+                this.team0capture += costValue;
+                this.team1capture -= costValue;
             }else if(this.team1 > this.team0)
             {
                 this.capturingBy = this.team1;
-                this.team1capture += (2.5 * (num * 1));
-                this.team0capture = -this.team1capture;
+                this.team1capture += costValue;
+                this.team0capture -= costValue;
             }
     
             //base case
@@ -263,8 +307,10 @@ class Obj{
                 if(this.capturingBy == this.team0)
                 {
                     this.team0capture = 100;
+                    this.team1capture = -100;
                 }else{
-                    this.team1capture = -100
+                    this.team1capture = 100;
+                    this.team0capture = -100;
                 }
 
                 clearInterval(main);
@@ -307,6 +353,17 @@ io.on('connection', (socket) => {
     //add socket in the list
     socketList[socket.id] = socket;
     let team = 0;
+    let username;
+    let players = 0;
+    for(let e in Player.list)
+    {
+        players++;
+    }
+    if(players >= 40)
+    {
+        socket.emit("NopeJoin");
+    }
+    
 
     //sign in details
 
@@ -316,8 +373,14 @@ io.on('connection', (socket) => {
             pass = res;
             }
         );
+        let players = 0;
+        for(let e in Player.list)
+        {
+            players++;
+        }
         
         setTimeout(() => {
+
             if(pass == data.password)
             {
                 socket.emit("signInPassed");
@@ -326,6 +389,8 @@ io.on('connection', (socket) => {
             {
                 console.log("nooooooooo");
             }
+            username = data.userName;
+            addScoreboardPlayer(data.userName);
         }, 500);
         
     });
@@ -386,6 +451,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () =>
     {
         io.emit('playerDisconnected', socket.id);
+        deleteScoreboardPlayer(username);
         delete socketList[socket.id];
         delete Player.list[socket.id];
     });
@@ -440,6 +506,7 @@ io.on('connection', (socket) => {
             team0points++;
         }
         PlayerDied.push(id);
+        UpdateDeaths(username);
     });
 
 
@@ -457,7 +524,11 @@ io.on('connection', (socket) => {
                 }else{
                     b = new Bullet(bullet.id, player.id);
                 }
-                b.update(bullet);            
+                b.update(bullet);     
+                if(b.killed)
+                {
+                    UpdateKill(username);
+                }       
 
         }
         
@@ -467,11 +538,30 @@ io.on('connection', (socket) => {
 
 let updateInterval;
 let emitInterval;
+let emitGameFinish = false;
 const gameFinish = () => {
     //do something
     isGameFinished = true;
     clearInterval(updateInterval);
-    clearInterval(emitInterval);
+    emitGameFinish = true;
+
+    setTimeout(() => {
+        team0points = 0;
+        team1points = 0;
+        for(let i =0; i < objs.length; i++)
+        {
+            objs[i].team0capture = 0;
+            objs[i].team1capture = 0;
+            objs[i].team1 = 0;
+            objs[i].team0 = 0;
+
+        }
+        ClearKills();
+        ClearDeaths();
+        startEmiting();
+        updateGameLoop();
+    }, 30000)
+
 }
 
 
@@ -481,28 +571,31 @@ const updateGameLoop =  () => {
         for (let i = 0; i < objs.length; i++)
         {
             const obj = objs[i];
-            if(obj.team0capture == 100)
+            if(obj.team0capture >= 100)
             {
-                team0points += 1/35;
+                team0points += 1/15;
 
-            }else if(obj.team1capture == 100 )
+            }
+            if(obj.team1capture >= 100 )
             {
-                team1points += 1/35;
+                team1points += 1/15;
             }
         }
-        team0points += 1/35;
-        team1points += 1/35;
+        team0points += 1/20;
+        team1points += 1/20;
 
         if(team0points >= 1000 || team1points >= 1000)
         {
             gameFinish();
-            clearInterval(interval);
         }
 
     }, 1000/25)
     
 }
 
+
+let dataTimer = 0;
+let scoreboard = null;
 
 const startEmiting = () => {
 
@@ -587,22 +680,52 @@ const startEmiting = () => {
                 objs[i].sendCapture = false;
             }
         }
+
+        let dataScore = null
+        if(dataTimer >= 0)
+        {
+            if(dataTimer == 0)
+            {
+                getScoreBoard().then((res) => {scoreboard = res}).catch(err => console.log(err));
+            }
+            dataTimer++; 
+
+            if(scoreboard != null)
+            {
+                dataScore = scoreboard;
+                scoreboard = null;
+                dataTimer = 0;
+            }   
+
+        }
  
 
 
 
 
         for(let id in socketList){
-            socket = socketList[id];
-            socket.emit("update", pack);
-            /*if(sendObj.length > 0)
+            if(Player.list[id])
             {
-                socket.emit("objectiveUpdate", sendObj);
-                console.log('sending objective');
-            }*/
-            if(PlayerDied.length > 0)
-            {
-                socket.emit("playerDied", PlayerDied);
+                    
+                socket = socketList[id];
+                socket.emit("update", pack);
+                /*if(sendObj.length > 0)
+                {
+                    socket.emit("objectiveUpdate", sendObj);
+                    console.log('sending objective');
+                }*/
+                if(PlayerDied.length > 0)
+                {
+                    socket.emit("playerDied", PlayerDied);
+                }
+                if(dataScore != null)
+                {
+                    socket.emit('Scoreboard', dataScore);
+                }
+                if(emitGameFinish)
+                {
+                    socket.emit('gameFinished');
+                }
             }
         }
 
@@ -613,6 +736,12 @@ const startEmiting = () => {
                 delete Player.list[PlayerDied[i]];
             }
             PlayerDied.splice(0, PlayerDied.length);
+        }
+
+        if(emitGameFinish)
+        {
+            clearInterval(emitInterval);
+            emitGameFinish = false;
         }
 
         

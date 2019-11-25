@@ -12,11 +12,20 @@ export const objs = [];
 let team0points = 0;
 let team1points = 0
 
+let database = [];
+
+export const setDatabase = (data) => {
+    database = data;
+}
+
+export const getDatabase = () => {
+    return database;
+}
 
 
 export const Update = () =>{
 
-    console.log("team0points: " + team0points);
+    //console.log("team0points: " + team0points);
 
     if(team0points >= 1000 || team1points >= 1000)
     {

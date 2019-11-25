@@ -32,7 +32,12 @@ export const elements = {
     Bar2 : document.querySelector('#bar2'),
     Team2 : document.querySelector('#team2'),
     Ammo : document.querySelector('#ammo'),
-    Health : document.querySelector('#health')
+    Health : document.querySelector('#health'),
+    objectiveLetter : document.querySelector('#objectiveLetter'),
+    objBar : document.querySelector('#objectivebar'),
+    scoreboardPage : document.querySelector('#Scoreboard'),
+    scb1 : document.querySelector('#scb1'),
+    scb2 : document.querySelector('#scb2')
 }
 
 

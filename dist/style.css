@@ -329,6 +329,7 @@ th {
 }
 
 #objectivebar {
+  display: none;  
   width: 100%;
   height: auto;
   text-align: center;
