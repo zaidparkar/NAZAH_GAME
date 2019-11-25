@@ -25,6 +25,7 @@ export const elements = {
     respawnPage : document.querySelector("#Respawn"),
     XRespawn : document.querySelector("#XRespawn"),
     XOption : document.querySelector("#XOption"),
+    Xscore : document.querySelector("#XScoreboard"),
     Playerui : document.querySelector('#playerui'),
     Bar1 : document.querySelector('#bar1'),
     Team1 : document.querySelector('#team1'),

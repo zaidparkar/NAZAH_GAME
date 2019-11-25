@@ -360,7 +360,21 @@ base.elements.ymainback.addEventListener("click", () => {
 });
 
 
+//repsawn page options button
+let XScore = false;
 
+export const getXScore = () => {
+    return XScore;
+} 
+
+export const setXScore = (value) => {
+    XScore = value;
+}
+
+base.elements.Xscore.addEventListener("click", () => {
+    XScore = true;
+    
+});
 
 
 let spawn = false;

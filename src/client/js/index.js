@@ -239,6 +239,10 @@ const respawnState = () =>{
                 Control.setXRespawn(false);
                 Control.setSpawn(true);
                 startState();
+            }else if(Control.getXScore()){
+                clearInterval(eventInterval);
+                Control.setXScore(false);
+                scoreboardState();
             }
         }else{
             scoreboardState();
