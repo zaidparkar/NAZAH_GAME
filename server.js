@@ -16,6 +16,8 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/dist/index.html');
 });
 
+app.set('trust proxy', 1);
+
 
 let team0points = 0;
 let team1points = 0;
@@ -28,7 +30,7 @@ let isGameFinished = false;
 
 
 var con = mysql.createConnection({
-  host: "sql12.freemysqlhosting.net	",
+  host: "sql12.freemysqlhosting.net",
   user: "sql12313385",
   password: 'fsJjcBLylY',
   database: 'sql12313385'
@@ -157,7 +159,10 @@ const getUsernameTemp = (id)=>{
 const getPasswordTemp = (id)=>{
     return new Promise((resolve, reject) => { con.query('SELECT Password from users where id="'+id+'"',(err,res)=>{
             if (err)
-                reject(err);
+                {
+                    reject(err);
+                    throw err;
+                }
             resolve(res[0].Password);  
             
         });
