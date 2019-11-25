@@ -344,6 +344,25 @@ base.elements.XOption.addEventListener("click", () => {
 });
 
 
+
+let ymainBack = false;
+
+export const getYMainBack = () => {
+    return ymainBack;
+} 
+
+export const setYMainBack = (value) => {
+    ymainBack = value;
+}
+
+base.elements.ymainback.addEventListener("click", () => {
+    ymainBack = true;
+});
+
+
+
+
+
 let spawn = false;
 
 export const canSpawn = () => {

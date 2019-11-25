@@ -15,6 +15,7 @@ const mapheight = CollisionSystem.mapSize.y;
 
 const screenWidth = document.documentElement.clientWidth - 15;
 const screenHeight = document.documentElement.clientHeight - 15;
+let count = 30 *25 ;
 
 let updateLoop;
 
@@ -135,6 +136,7 @@ const checkRegisterState = () => {
 const mainMenuState = () => {
     base.elements.mainMenu.style.display = "block";
     base.elements.lRPage.style.display = "none";
+    base.elements.scoreboardPage.style.display = 'none';
 
     //listen for the intervals
     const eventInterval = setInterval(() => {
@@ -159,9 +161,44 @@ const scoreboardState = () => {
     scoreboardView.drawScoreboard(GameController.getDatabase());
 
     base.elements.canvasMain.style.display = "none";
+    base.elements.Playerui.style.display = "none";
+    base.elements.timer.style.display = "none";
     base.elements.scoreboardPage.style.display = "block";
-    
 
+    if(!Connect.isGameRunning){
+        base.elements.timer.style.display = "block";
+        base.elements.ymainback.style.display = "none";
+
+        
+        const eventInterval = setInterval(() => {
+            if(count <= 0){
+                base.elements.timer.style.display = "none";
+                base.elements.ymainback.style.display = "block";
+                if(Control.getYMainBack())
+                {
+                    Control.setYMainBack(false);
+                    mainMenuState();
+                    clearInterval(eventInterval);
+                    count = 30 * 25;
+                }
+            }else{
+                base.elements.timer.textContent = `Game will start after: ${parseInt(count/25)} seconds `;
+                count--;
+            }
+        },40);
+    }else{
+        base.elements.timer.style.display = "none";
+        base.elements.ymainback.style.display = "block";
+        const eventInterval = setInterval(() => {
+                if(Control.getYMainBack())
+                {
+                    Control.setYMainBack(false);
+                    mainMenuState();
+                    clearInterval(eventInterval);
+                }
+
+        },40);
+    }
 }
 
 /*
@@ -194,7 +231,7 @@ const respawnState = () =>{
     base.elements.respawnPage.style.display = "block";
 
     const eventInterval = setInterval(() => {
-        if(Connect.isGameRunning())
+        if(Connect.isGameRunning)
         {
             if(Control.getXRespawn())
             {
@@ -378,6 +415,8 @@ const Update = () => {
             }
         }
     }else{
+        Connect.createPlayer(null);
+        clearInterval(updateLoop);
         scoreboardState();
     }
 };

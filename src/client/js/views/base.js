@@ -37,7 +37,9 @@ export const elements = {
     objBar : document.querySelector('#objectivebar'),
     scoreboardPage : document.querySelector('#Scoreboard'),
     scb1 : document.querySelector('#scb1'),
-    scb2 : document.querySelector('#scb2')
+    scb2 : document.querySelector('#scb2'),
+    timer: document.querySelector('#timeAfterFinish'),
+    ymainback : document.querySelector('#YMainMenu')
 }
 
 

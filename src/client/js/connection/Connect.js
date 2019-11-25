@@ -167,14 +167,13 @@ socket.on('update', (pack) =>
         }
         
     }
-    if(GameController.objs.length >=2)
+
+    for(let i = 0; i < pack.obj.length; i++)
     {
-        for(let i = 0; i < GameController.objs.length; i++)
-        {
-            GameController.objs[i].team0capture = pack.obj[i].cap0;
-            GameController.objs[i].team1capture = pack.obj[i].cap1;
-        }
+        GameController.objs[i].team0capture = pack.obj[i].cap0;
+        GameController.objs[i].team1capture = pack.obj[i].cap1;
     }
+
 
     GameController.setTeam0Points(pack.teamPoints[0]);
     GameController.setTeam1Points(pack.teamPoints[1]);

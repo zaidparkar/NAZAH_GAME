@@ -17,8 +17,8 @@ app.get('/', function (req, res) {
 });
 
 
-let team0points = 0;
-let team1points = 0;
+let team0points = 960;
+let team1points = 960;
 let isGameFinished = false;
 
 //..................database....................//
@@ -428,8 +428,6 @@ io.on('connection', (socket) => {
                 team1++;
             }
         }
-        console.log(team0);
-        console.log(team1);
 
         if(team0 <= team1)
         {
@@ -468,18 +466,21 @@ io.on('connection', (socket) => {
     socket.on('changedObj', (data) => {
         if(data != -1 && data != 255)
         {
-            if(player.team == 0)
+            if(data >= 0 && data<3)
             {
-                objs[data].team0++;
-            }else{
-                objs[data].team1++;
-            }
+                if(player.team == 0)
+                {
+                    objs[data].team0++;
+                }else{
+                    objs[data].team1++;
+                }
 
-            if(!objs[data].isCapturing)
+                if(!objs[data].isCapturing)
                 objs[data].capture();
+            }
             
         }else{
-            if(player.obj != -1)
+            if(player.obj != -1 && player.obj != 255)
             {
                 if(player.team == 0)
                 {
