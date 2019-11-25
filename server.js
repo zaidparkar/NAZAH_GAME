@@ -30,10 +30,10 @@ let isGameFinished = false;
 
 
 var con = mysql.createConnection({
-  host: "sql12.freemysqlhosting.net",
-  user: "sql12313385",
-  password: 'fsJjcBLylY',
-  database: 'sql12313385'
+  host: "localhost",
+  user: "root",
+  password: '',
+  database: 'players'
 });
 
 
