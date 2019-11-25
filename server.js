@@ -16,6 +16,8 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/dist/index.html');
 });
 
+app.set('trust proxy', 1);
+
 
 let team0points = 0;
 let team1points = 0;
