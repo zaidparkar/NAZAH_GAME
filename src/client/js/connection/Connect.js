@@ -5,7 +5,7 @@ const io = require('socket.io-client');
 
 
 //Connects to the defined address
-const socket = io.connect('http://localhost');
+const socket = io.connect('https://gungalenazah.herokuapp.com/');
 
 
 //self id for the player
