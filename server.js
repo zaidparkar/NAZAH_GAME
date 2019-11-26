@@ -5,7 +5,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 var mysql = require('mysql');
 
-server.listen(80);
+server.listen(process.env.PORT || 80);
 // WARNING: app.listen(80) will NOT work here!
 
 //Sends the 'dist' folder to server
@@ -30,10 +30,10 @@ let isGameFinished = false;
 
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: '',
-  database: 'players'
+  host: "sql12.freemysqlhosting.net",
+  user: "sql12313385",
+  password: 'fsJjcBLylY',
+  database: 'sql12313385'
 });
 
 
