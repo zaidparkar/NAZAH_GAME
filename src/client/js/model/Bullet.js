@@ -25,11 +25,8 @@ export class Bullet extends Entity{
                 this.destroyed = true;
                 delete Bullet.list[this.id];
             }
-      
-      
             //checks if the cell is occupied
             this.hitRay(getCell);
-      
         }
  
     }

@@ -11,6 +11,19 @@ export class Player extends Entity {
         super(id, x, y);
         this.health = 100;
 
+        this.spawned = true;
+
+        this.isDead = false;
+
+        //animation
+        this.frameHelper1 = 0;
+        this.frameHelper2 = 0;
+        
+
+        //team
+        this.team = 0;
+        this.changedTeam = false;
+
         //Gun variables 
 
 
@@ -33,6 +46,11 @@ export class Player extends Entity {
         
         this.cells = [];
 
+        //the objective they are in
+        this.obj = -1;
+        this.changedObj = false;
+        this.objTimer = 0;
+
         //variable used in ischanged function to know if the player moved
         this.preMovement = {
             x : this.x,
@@ -49,7 +67,19 @@ export class Player extends Entity {
 
     //updates the movement
     // it recieves the controls key and angle from the mouse movement as the parameters
+
+    checkHealth(){
+        if(this.health <= 0)
+        {
+            this.die();
+        }
+    }
+
     update(movement, angle, click, cells){
+        //console.log("yare yare daze");
+        this.objTimer++;
+
+        this.checkHealth();
 
         //check the cells for collision
         const restrict = this.restriction(cells);
@@ -186,13 +216,13 @@ export class Player extends Entity {
     {
         let changed = false;
 
-        if(this.preMovement.x = this.x)
+        if(this.preMovement.x != this.x)
         {
             changed = true;
-        }else if (this.preMovement.y = this.y)
+        }else if (this.preMovement.y != this.y)
         {
             changed = true;
-        }else if (this.preMovement.angle = this.angle){
+        }else if (this.preMovement.angle != this.angle){
             changed = true;
         }
         if(changed)
@@ -201,6 +231,7 @@ export class Player extends Entity {
             this.preMovement.y = this.y;
             this.preMovement.angle = this.angle
         }
+        
         return changed;
 
     }
@@ -210,12 +241,26 @@ export class Player extends Entity {
     {
         this.clearGrid();
 
+        let obj = -1;
         this.cells = cells;
         for (let i = 0; i < this.cells.length; i++)
         {
             this.cells[i].occupied = true;
             this.cells[i].id = this.id;
+            if(this.cells[i].obj != obj)
+            {
+                obj = this.cells[i].obj;
+            }
         }
+        
+        if(this.obj != obj && this.changedObj == false && this.objTimer > 25)
+        {
+            this.obj = obj;
+            this.changedObj = true;
+            this.objTimer =0 ;
+        }
+        
+        
     }
     //clears the cells the players occupied 
     clearGrid(){
@@ -225,6 +270,19 @@ export class Player extends Entity {
             this.cells[i].occupied = false;
             this.cells[i].id = null;
         }
+    }
+
+    die()
+    {
+        this.clearGrid();
+        if(this.obj != -1 && this.obj != 255)
+        {
+            this.changedObj = true;
+            this.obj = -1;
+        }
+        this.isDead = true;
+        delete Player.list[this.id];
+        
     }
 
 

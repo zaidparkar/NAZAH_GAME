@@ -1,7 +1,7 @@
 
 
 
-export const drawBullet = (bullet,ctx) =>{
+export const drawBullet = (bullet,ctx,x,y) =>{
 
     ctx.save();
 
@@ -9,8 +9,9 @@ export const drawBullet = (bullet,ctx) =>{
     // some of the values are hardcoded and waiting for replacement
     ctx.height = 75;
     ctx.width = 50;
-    ctx.translate(bullet.x, bullet.y);
+    ctx.translate(bullet.x + x, bullet.y + y);
     ctx.rotate(bullet.angle);
+    ctx.fillStyle = "rgba(0,0,0,1)";
     ctx.fillRect(0,0,10,10);
 
     //restores the contexts transform
